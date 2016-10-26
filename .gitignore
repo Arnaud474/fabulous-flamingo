@@ -9,6 +9,7 @@
 *.ear
 
 # IntelliJ Files #
+fabulous-flamingo.iml
 .idea/
 out/
 
