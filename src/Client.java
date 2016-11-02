@@ -1,108 +1,151 @@
 
+import Game.Board;
+
 import java.io.*;
 import java.net.*;
+import java.util.Arrays;
 
 
 class Client {
-	public static void main(String[] args) {
-         
-	Socket MyClient;
-	BufferedInputStream input;
-	BufferedOutputStream output;
-    int[][] board = new int[8][8];
-	try {
-		MyClient = new Socket("localhost", 8888);
-	   	input    = new BufferedInputStream(MyClient.getInputStream());
-		output   = new BufferedOutputStream(MyClient.getOutputStream());
-		BufferedReader console = new BufferedReader(new InputStreamReader(System.in));  
-	   	while(1 == 1){
-			char cmd = 0;
-		   	
-            cmd = (char)input.read();
-            		
-            // Début de la partie en joueur blanc
-            if(cmd == '1'){
-                byte[] aBuffer = new byte[1024];
-				
-				int size = input.available();
-				//System.out.println("size " + size);
-				input.read(aBuffer,0,size);
-                String s = new String(aBuffer).trim();
-                System.out.println(s);
-                String[] boardValues;
-                boardValues = s.split(" ");
-                int x=0,y=0;
-                for(int i=0; i<boardValues.length;i++){
-                    board[x][y] = Integer.parseInt(boardValues[i]);
-                    x++;
-                    if(x == 8){
-                        x = 0;
-                        y++;
-                    }
-                }
 
-                System.out.println("Nouvelle partie! Vous jouer blanc, entrez votre premier coup : ");
-                String move = null;
-                move = console.readLine();
-				output.write(move.getBytes(),0,move.length());
-				output.flush();
-            }
-            // Début de la partie en joueur Noir
-            if(cmd == '2'){
-                System.out.println("Nouvelle partie! Vous jouer noir, attendez le coup des blancs");
-                byte[] aBuffer = new byte[1024];
-				
-				int size = input.available();
-				//System.out.println("size " + size);
-				input.read(aBuffer,0,size);
-                String s = new String(aBuffer).trim();
-                System.out.println(s);
-                String[] boardValues;
-                boardValues = s.split(" ");
-                int x=0,y=0;
-                for(int i=0; i<boardValues.length;i++){
-                    board[x][y] = Integer.parseInt(boardValues[i]);
-                    x++;
-                    if(x == 8){
-                        x = 0;
-                        y++;
-                    }
-                }
-            }
+    private static Client INSTANCE;
 
+    private Socket clientSocket;
+    private BufferedInputStream in;
+    private BufferedOutputStream out;
+    private int clientColor;
+    private Board board;
+    private boolean isStarted;
 
-			// Le serveur demande le prochain coup
-			// Le message contient aussi le dernier coup joué.
-			if(cmd == '3'){
-				byte[] aBuffer = new byte[16];
-				
-				int size = input.available();
-				//System.out.println("size " + size);
-				input.read(aBuffer,0,size);
-				
-				String s = new String(aBuffer);
-				System.out.println("Dernier coup : "+ s);
-		       	System.out.println("Entrez votre coup : ");
-				String move = null;
-				move = console.readLine();
-				output.write(move.getBytes(),0,move.length());
-				output.flush();
-				
-			}
-			// Le dernier coup est invalide
-			if(cmd == '4'){
-				System.out.println("Coup invalide, entrez un nouveau coup : ");
-		       	String move = null;
-				move = console.readLine();
-				output.write(move.getBytes(),0,move.length());
-				output.flush();
-				
-			}
+    private Client(){
+        try{
+            clientSocket = new Socket("localhost", 8888);
+            in    = new BufferedInputStream(clientSocket.getInputStream());
+            out   = new BufferedOutputStream(clientSocket.getOutputStream());
+            board = new Board(8,8);
+            isStarted = false;
         }
-	}
-	catch (IOException e) {
-   		System.out.println(e);
-	}
-	
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void start(){
+
+        //To make sure there is no problems with the server
+        boolean stop = false;
+
+        //Check if client is already started
+        if(!isStarted){
+
+            isStarted = true;
+
+            //Infinite loop to poll the server (if there is no errors)
+            while(!stop){
+
+                try{
+                    char cmd = 0;
+
+                    //Reads the command code from the server
+                    cmd = (char)in.read();
+
+                    switch(cmd){
+                        //New Game, this client is white
+                        case '1':
+                            clientColor = 4;
+                            System.out.println(Arrays.deepToString(formatBoardData())); //Prints bidimensional array properly
+                            break;
+                        //New Game, this client is black
+                        case '2':
+                            clientColor = 2;
+                            System.out.println(Arrays.deepToString(formatBoardData())); //Prints bidimensional array properly
+                            break;
+                        //Server asks for next move on this client and returns last move played
+                        case '3':
+                            board.updateBoard(readMove());
+                            break;
+                        //Invalid movement
+                        case '4':
+
+                            break;
+                    }
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                    stop = true;
+                }
+
+
+            }
+
+        }
+
+
+    }
+
+
+    public static Client getInstance(){
+        if(INSTANCE == null)
+        {
+            INSTANCE = new Client();
+        }
+
+        return INSTANCE;
+    }
+
+    private int[][] formatBoardData() throws IOException{
+
+        //Int array to represent the board
+        byte[] buffer = new byte[1024];
+
+        //Size of the current buffer
+        int size = in.available();
+
+        //Read the buffer
+        in.read(buffer, 0, size);
+
+        //Put the value from the string inside an array
+        String[] boardValues = new String(buffer).trim().split(" ");
+
+        //Set board values inside the board class
+        board.setBoard(boardValues);
+
+        return board.getBoard();
+    }
+
+    /**
+     * Reads move from the server en returns it as string
+     *
+     * @return String containing the move
+     * @throws IOException
+     */
+    private String readMove() throws IOException{
+
+        byte[] buffer = new byte[16];
+
+        int size = in.available();
+
+        in.read(buffer, 0, size);
+
+        return new String(buffer);
+    }
+
+    /**
+     * Send move to the game server move must be in either of these formats
+     * D4D5 D4 D5
+     *
+     * @param move
+     */
+    private void sendMove(String move){
+
+    }
+
+    /**
+     * Gets player color for this client
+     *
+     * @return The color of the player on this client
+     */
+    public int getClientColor() {
+        return clientColor;
     }
 }
