@@ -17,6 +17,7 @@ public class Board {
 		//Initializing the conversion hashmap for x coordinates
 		conversion = new HashMap<Character, Integer>();
 
+        //Horizontal (X)
 		conversion.put('A', 0);
 		conversion.put('B', 1);
 		conversion.put('C', 2);
@@ -26,6 +27,7 @@ public class Board {
 		conversion.put('G', 6);
 		conversion.put('H', 7);
 
+        //Vertical (Y)
 		conversion.put('1', 7);
 		conversion.put('2', 6);
 		conversion.put('3', 5);
@@ -42,6 +44,7 @@ public class Board {
 	}
 
 	public void setBoard(String[] state) {
+
 		//Turn the array of String into a bidimensional array of integers
 		for(int i = 0; i <  state.length; i++){
 			//Super efficient one-liner of destiny
@@ -57,8 +60,6 @@ public class Board {
 	public void updateBoard(String move){
 		String[] moves = move.split(" - ");
 
-		System.out.println(Arrays.toString(moves));
-
 		//Removing white spaces
 		for (int i = 0; i < moves.length; i++)
 			moves[i] = moves[i].trim();
@@ -70,6 +71,23 @@ public class Board {
 		//Putting the piece in the new position
 		board[conversion.get(moves[1].charAt(1))][conversion.get(moves[1].charAt(0))] = piece;
 
-		System.out.println(Arrays.deepToString(board));
+        //Prints the move string
+        System.out.println("Player " + (piece == 4 ? "White" : "Black") + " moved from " + moves[0] + " to " + moves[1]);
+        System.out.println("---------------------------------");
+
+		printBoard();
 	}
+
+	public void printBoard(){
+
+        //Check every position on the board
+        for(int i = 0; i < board.length; i++){
+
+            for(int j = 0; j < board[0].length; j++){
+                System.out.print(board[i][j]);
+            }
+
+            System.out.print('\n');
+        }
+    }
 }

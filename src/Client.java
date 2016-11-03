@@ -53,18 +53,18 @@ class Client {
                         //New Game, this client is white
                         case '1':
                             clientColor = 4;
-                            System.out.println(Arrays.deepToString(formatBoardData())); //Prints bidimensional array properly
+                            formatBoardData(); //Prints bidimensional array properly
                             break;
                         //New Game, this client is black
                         case '2':
                             clientColor = 2;
-                            System.out.println(Arrays.deepToString(formatBoardData())); //Prints bidimensional array properly
+                            formatBoardData(); //Prints bidimensional array properly
                             break;
                         //Server asks for next move on this client and returns last move played
                         case '3':
                             board.updateBoard(readMove());
                             break;
-                        //Invalid movement
+                        //Invalid movement (Will never happen)
                         case '4':
 
                             break;
@@ -109,6 +109,8 @@ class Client {
 
         //Set board values inside the board class
         board.setBoard(boardValues);
+
+        board.printBoard();
 
         return board.getBoard();
     }
