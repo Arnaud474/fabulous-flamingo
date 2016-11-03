@@ -1,5 +1,6 @@
 
 import Game.Board;
+import Game.Piece;
 
 import java.io.*;
 import java.net.*;
@@ -93,7 +94,7 @@ class Client {
         return INSTANCE;
     }
 
-    private int[][] formatBoardData() throws IOException{
+    private Piece[][] formatBoardData() throws IOException{
 
         //Int array to represent the board
         byte[] buffer = new byte[1024];

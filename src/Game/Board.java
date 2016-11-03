@@ -7,12 +7,13 @@ import java.util.HashMap;
  * Created by Arnaud on 10/26/2016.
  */
 public class Board {
-	private int[][] board;
+	//private int[][] board;
 	private HashMap<Character, Integer> conversion;
+    private Piece[][] board;
 
 	public Board(int x, int y) {
 		super();
-		this.board = new int[x][y];
+		this.board = new Piece[x][y];
 
 		//Initializing the conversion hashmap for x coordinates
 		conversion = new HashMap<Character, Integer>();
@@ -39,17 +40,23 @@ public class Board {
 
 	}
 
-	public int[][] getBoard() {
+	public Piece[][] getBoard() {
 		return board;
 	}
 
 	public void setBoard(String[] state) {
 
 		//Turn the array of String into a bidimensional array of integers
-		for(int i = 0; i <  state.length; i++){
+		/*for(int i = 0; i <  state.length; i++){
 			//Super efficient one-liner of destiny
 			board[i/board.length][i % board[0].length] = Integer.parseInt(state[i]);
-		}
+		}*/
+
+        for(int i = 0; i <  state.length; i++){
+            //Super efficient one-liner of destiny
+            board[i/board.length][i % board[0].length] = new Piece(Integer.parseInt(state[i]));
+        }
+
 	}
 
 	/**
@@ -65,14 +72,14 @@ public class Board {
 			moves[i] = moves[i].trim();
 
 		//Removing the piece from first position
-		int piece = board[conversion.get(moves[0].charAt(1))][conversion.get(moves[0].charAt(0))];
-		board[conversion.get(moves[0].charAt(1))][conversion.get(moves[0].charAt(0))] = 0;
+		Piece piece = new Piece(board[conversion.get(moves[0].charAt(1))][conversion.get(moves[0].charAt(0))]);
+		board[conversion.get(moves[0].charAt(1))][conversion.get(moves[0].charAt(0))] = null;
 
 		//Putting the piece in the new position
 		board[conversion.get(moves[1].charAt(1))][conversion.get(moves[1].charAt(0))] = piece;
 
         //Prints the move string
-        System.out.println("Player " + (piece == 4 ? "White" : "Black") + " moved from " + moves[0] + " to " + moves[1]);
+        System.out.println("Player " + (piece.getColor() == 4 ? "White" : "Black") + " moved from " + moves[0] + " to " + moves[1]);
         System.out.println("---------------------------------");
 
 		printBoard();
@@ -84,7 +91,10 @@ public class Board {
         for(int i = 0; i < board.length; i++){
 
             for(int j = 0; j < board[0].length; j++){
-                System.out.print(board[i][j]);
+                if(board[i][j] != null)
+                    System.out.print(board[i][j].getColor());
+                else
+                    System.out.print(0);
             }
 
             System.out.print('\n');
