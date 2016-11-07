@@ -91,6 +91,7 @@ public class Board {
         for(int i = 0; i < board.length; i++){
 
             for(int j = 0; j < board[0].length; j++){
+                //Check if spot contains a Piece Object
                 if(board[i][j] != null)
                     System.out.print(board[i][j].getColor());
                 else

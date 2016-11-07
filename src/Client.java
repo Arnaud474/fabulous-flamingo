@@ -1,4 +1,5 @@
 
+import Game.AI.AI;
 import Game.Board;
 import Game.Piece;
 
@@ -17,6 +18,10 @@ class Client {
     private int clientColor;
     private Board board;
     private boolean isStarted;
+
+    //Reference to AI
+    AI ai = AI.getInstance();
+
 
     private Client(){
         try{
@@ -63,7 +68,10 @@ class Client {
                             break;
                         //Server asks for next move on this client and returns last move played
                         case '3':
+                            //Update board state
                             board.updateBoard(readMove());
+                            //Find best move
+                            ai.findBestMove(clientColor, board);
                             break;
                         //Invalid movement (Will never happen)
                         case '4':
