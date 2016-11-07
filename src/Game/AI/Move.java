@@ -21,8 +21,12 @@ public class Move {
         this.to = t;
         this.type = type;
     }
-
+    
     public void setCost(int cost){
-
+    	this.cost = cost;
+    }
+    
+    public int getType(){
+    	return this.type;
     }
 }

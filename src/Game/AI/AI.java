@@ -5,6 +5,7 @@ import Game.Piece;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class AI {
 
@@ -284,7 +285,13 @@ public class AI {
 
         //Find all moves
         ArrayList<Move> moves = INSTANCE.findAllPossibleMoves(color, board);
-        
+        attributeCosts(moves);
         return "";
+    }
+    public static void attributeCosts(ArrayList<Move> array){
+    	Random r = new Random();
+    	for(Move move:array){
+    		move.setCost((r.nextInt(100+100)-100) * move.getType());
+    	}
     }
 }
