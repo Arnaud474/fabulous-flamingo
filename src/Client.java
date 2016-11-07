@@ -54,7 +54,7 @@ class Client {
 
                     //Reads the command code from the server
                     cmd = (char)in.read();
-
+                    System.out.println(cmd);
                     switch(cmd){
                         //New Game, this client is white
                         case '1':
