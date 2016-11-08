@@ -41,6 +41,7 @@ class Client {
         //To make sure there is no problems with the server
         boolean stop = false;
 
+        
         //Check if client is already started
         if(!isStarted){
 
@@ -69,6 +70,7 @@ class Client {
                         //Server asks for next move on this client and returns last move played
                         case '3':
                             //Update board state
+                        	ai.setPlayerColor(clientColor);
                             board.updateBoard(readMove());
                             //Find best move
                             ai.findBestMove(clientColor, board);

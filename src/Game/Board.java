@@ -65,6 +65,7 @@ public class Board {
 	 * @param move
 	 */
 	public void updateBoard(String move){
+		//Make sure it works for a move without -
 		String[] moves = move.split(" - ");
 
 		//Removing white spaces

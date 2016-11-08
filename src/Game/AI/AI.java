@@ -5,6 +5,7 @@ import Game.Piece;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 public class AI {
@@ -12,7 +13,9 @@ public class AI {
     private static AI INSTANCE;
     private static int TYPE_EAT = 2;
     private static int TYPE_MOVE = 1;
-    
+    private static int PLAYER_COLOR = 0;
+	private static Move  selectedMove = null;
+	
     private AI(){
     }
 
@@ -23,6 +26,9 @@ public class AI {
         }
 
         return INSTANCE;
+    }
+    public static void setPlayerColor(int color){
+    	PLAYER_COLOR = color;
     }
 
     /**
@@ -284,8 +290,9 @@ public class AI {
     public static String findBestMove(int color, Board board){
 
         //Find all moves
-        ArrayList<Move> moves = INSTANCE.findAllPossibleMoves(color, board);
-        attributeCosts(moves);
+        //ArrayList<Move> moves = INSTANCE.findAllPossibleMoves(color, board);
+        //attributeCosts(moves);
+    	miniMax(1, color, Integer.MIN_VALUE, Integer.MAX_VALUE, board);
         return "";
     }
     public static void attributeCosts(ArrayList<Move> array){
@@ -294,4 +301,76 @@ public class AI {
     		move.setCost((r.nextInt(100+100)-100) * move.getType());
     	}
     }
+    
+    /*
+     * MINIMAX****/
+	private class Node{
+		public Move move;
+		public int value;
+		
+		public Node(){
+			this.move = null;
+			this.value = 0;
+		}
+		
+		public Node(Move move, int value){
+			this.move= move;
+			this.value = value;
+		}
+		
+		@Override
+		public String toString(){
+			return "Node{ move= " + move +" , value=" + value + " }";
+		}
+	}
+	public static Node miniMax(int depth, int color, int alpha, int beta, Board boardParam){
+		int opponentColor = -1;
+		if(color == 2){
+			opponentColor = 4;
+		}if(color == 4){
+			opponentColor = 2;
+		}
+		/*
+		if(!keepGoing()){
+			return new Node();
+		}*/
+		ArrayList<Move> moves = INSTANCE.findAllPossibleMoves(color, boardParam);
+		attributeCosts(moves);
+		Iterator<Move> iterator = moves.iterator();
+		Node moveNode = INSTANCE.new Node();
+		boolean isMax = (color == PLAYER_COLOR);
+		if (depth == 0){
+			return moveNode;
+		}
+		while(iterator.hasNext()){
+			Board boardTmp = boardParam;
+			Move currentMove = iterator.next();
+			String move = currentMove.toString();
+			System.out.println(move);
+			boardTmp.updateBoard(move);
+			moveNode = miniMax(depth - 1, opponentColor, alpha, beta, boardTmp);
+			
+			 if (isMax) {
+		            if (moveNode.value > alpha) {
+		                selectedMove = currentMove;
+		                alpha = moveNode.value;
+		            }
+		        } else {
+		            if (moveNode.value < beta) {
+		                beta = moveNode.value;
+		                selectedMove = currentMove;
+		            }
+		        }
+		        if (alpha >= beta) {
+		            break;
+		        }
+		    }
+		    return (isMax) ? INSTANCE.new Node(selectedMove, alpha) : INSTANCE.new Node(selectedMove, beta);
+		
+		
+	}
+	
+	public static boolean keepGoing(){
+		return true;
+	}
 }
