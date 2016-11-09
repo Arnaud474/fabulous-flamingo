@@ -73,7 +73,8 @@ class Client {
                         	ai.setPlayerColor(clientColor);
                             board.updateBoard(readMove());
                             //Find best move
-                            ai.findBestMove(clientColor, board);
+                            String move = ai.findBestMove(clientColor, board);
+                            this.sendMove("3"+move);
                             break;
                         //Invalid movement (Will never happen)
                         case '4':
@@ -150,7 +151,16 @@ class Client {
      * @param move
      */
     private void sendMove(String move){
-
+    	
+       
+    	
+    	try {
+    		 PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+    		 writer.println(move);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     /**

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
+import com.sun.xml.internal.ws.developer.SerializationFeature;
+
 public class AI {
 
     private static AI INSTANCE;
@@ -15,7 +17,6 @@ public class AI {
     private static int TYPE_MOVE = 1;
     private static int PLAYER_COLOR = 0;
 	private static Move  selectedMove = null;
-	
     private AI(){
     }
 
@@ -187,13 +188,13 @@ public class AI {
                     if((i+countY) < b[i].length){
                         //Check for obstacles
                     	if(obstacleY != null && (i+countY) < obstacleY.getY()){
-                            moves.add(new Move(b[i][j], new Point(j, i), new Point(j, i+count), TYPE_MOVE));
+                            moves.add(new Move(b[i][j], new Point(j, i), new Point(j, i+countY), TYPE_MOVE));
                         }
                     	else if(obstacleY != null && (i+countY) == obstacleY.getY()){
-                            moves.add(new Move(b[i][j], new Point(j, i), new Point(j, i+count), TYPE_EAT));
+                            moves.add(new Move(b[i][j], new Point(j, i), new Point(j, i+countY), TYPE_EAT));
                         }
                     	else if(obstacleY == null){
-                            moves.add(new Move(b[i][j], new Point(j, i), new Point(j, i+count), TYPE_MOVE));
+                            moves.add(new Move(b[i][j], new Point(j, i), new Point(j, i+countY), TYPE_MOVE));
                         }
                     }
                     
@@ -201,13 +202,13 @@ public class AI {
                     if((i-countY) >= 0){
                         //Check for obstacles
                     	if(obstacleY != null && (i-countY) > obstacleY.getY()){
-                            moves.add(new Move(b[i][j], new Point(j, i), new Point(j, i-count), TYPE_MOVE));
+                            moves.add(new Move(b[i][j], new Point(j, i), new Point(j, i-countY), TYPE_MOVE));
                         }
                     	else if(obstacleY != null && (i+countY) == obstacleY.getY()){
-                            moves.add(new Move(b[i][j], new Point(j, i), new Point(j, i-count), TYPE_EAT));
+                            moves.add(new Move(b[i][j], new Point(j, i), new Point(j, i-countY), TYPE_EAT));
                         }
                     	else if(obstacleY == null){
-                            moves.add(new Move(b[i][j], new Point(j, i), new Point(j, i-count), TYPE_MOVE));
+                            moves.add(new Move(b[i][j], new Point(j, i), new Point(j, i-countY), TYPE_MOVE));
                         }
                     }
                     
@@ -292,8 +293,8 @@ public class AI {
         //Find all moves
         //ArrayList<Move> moves = INSTANCE.findAllPossibleMoves(color, board);
         //attributeCosts(moves);
-    	miniMax(1, color, Integer.MIN_VALUE, Integer.MAX_VALUE, board);
-        return "";
+    	Node best = miniMax(4, color, Integer.MIN_VALUE, Integer.MAX_VALUE, board);
+        return ((Move)best.move).toString();
     }
     public static void attributeCosts(ArrayList<Move> array){
     	Random r = new Random();
@@ -324,10 +325,11 @@ public class AI {
 		}
 	}
 	public static Node miniMax(int depth, int color, int alpha, int beta, Board boardParam){
+
 		int opponentColor = -1;
 		if(color == 2){
 			opponentColor = 4;
-		}if(color == 4){
+		}else if(color == 4){
 			opponentColor = 2;
 		}
 		/*
@@ -343,10 +345,10 @@ public class AI {
 			return moveNode;
 		}
 		while(iterator.hasNext()){
-			Board boardTmp = boardParam;
+			Board boardTmp = new Board(boardParam.getBoard());
+			//Board boardTmp = boardParam;
 			Move currentMove = iterator.next();
 			String move = currentMove.toString();
-			System.out.println(move);
 			boardTmp.updateBoard(move);
 			moveNode = miniMax(depth - 1, opponentColor, alpha, beta, boardTmp);
 			
