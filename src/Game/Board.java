@@ -3,6 +3,7 @@ package Game;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created by Arnaud on 10/26/2016.
@@ -16,11 +17,11 @@ public class Board{
     	super();
     	this.board = deepCopy(p);
     	//Initializing the conversion hashmap for x coordinates
-    			this.conversion = new HashMap<Character, Integer>();
+    			conversion = new HashMap<Character, Integer>();
 
     	        //Horizontal (X)
-    			this.conversion.put('A', 0);
-    			this.conversion.put('B', 1);
+    			conversion.put('A', 0);
+    			conversion.put('B', 1);
     			conversion.put('C', 2);
     			conversion.put('D', 3);
     			conversion.put('E', 4);
@@ -78,7 +79,7 @@ public class Board{
 			//Super efficient one-liner of destiny
 			board[i/board.length][i % board[0].length] = Integer.parseInt(state[i]);
 		}*/
-
+		int stuff = 0;
         for(int i = 0; i <  state.length; i++){
             //Super efficient one-liner of destiny
             board[i/board.length][i % board[0].length] = new Piece(Integer.parseInt(state[i]));
@@ -124,7 +125,11 @@ public class Board{
 	    }
 	    return result;
 	}
-
+	public static int evaluateBoard(){
+		Random rand = new Random();
+		return rand.nextInt(100+100) - 100;
+		
+	}
 	public void printBoard(){
 		
         //Check every position on the board
