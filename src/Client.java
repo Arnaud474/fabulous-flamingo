@@ -40,6 +40,7 @@ class Client {
         //To make sure there is no problems with the server
         boolean stop = false;
 
+        
         //Check if client is already started
         if(!isStarted){
 
@@ -53,7 +54,7 @@ class Client {
 
                     //Reads the command code from the server
                     cmd = (char)in.read();
-
+                    System.out.println(cmd);
                     switch(cmd){
                         //New Game, this client is white
                         case '1':
@@ -68,9 +69,11 @@ class Client {
                         //Server asks for next move on this client and returns last move played
                         case '3':
                             //Update board state
+                        	ai.setPlayerColor(clientColor);
                             board.updateBoard(readMove());
                             //Find best move
-                            ai.findBestMove(clientColor, board);
+                            String move = ai.findBestMove(clientColor, board);
+                            this.sendMove("3"+move);
                             break;
                         //Invalid movement (Will never happen)
                         case '4':
@@ -147,7 +150,16 @@ class Client {
      * @param move
      */
     private void sendMove(String move){
-
+    	
+       
+    	
+    	try {
+    		 PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+    		 writer.println(move);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     /**

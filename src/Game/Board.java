@@ -1,16 +1,43 @@
 package Game;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 
 /**
  * Created by Arnaud on 10/26/2016.
  */
-public class Board {
+public class Board{
 	//private int[][] board;
 	private HashMap<Character, Integer> conversion;
     private Piece[][] board;
+    
+    public Board(Piece[][] p){
+    	super();
+    	this.board = deepCopy(p);
+    	//Initializing the conversion hashmap for x coordinates
+    			this.conversion = new HashMap<Character, Integer>();
 
+    	        //Horizontal (X)
+    			this.conversion.put('A', 0);
+    			this.conversion.put('B', 1);
+    			conversion.put('C', 2);
+    			conversion.put('D', 3);
+    			conversion.put('E', 4);
+    			conversion.put('F', 5);
+    			conversion.put('G', 6);
+    			conversion.put('H', 7);
+
+    	        //Vertical (Y)
+    			conversion.put('1', 7);
+    			conversion.put('2', 6);
+    			conversion.put('3', 5);
+    			conversion.put('4', 4);
+    			conversion.put('5', 3);
+    			conversion.put('6', 2);
+    			conversion.put('7', 1);
+    			conversion.put('8', 0);
+    }
 	public Board(int x, int y) {
 		super();
 		this.board = new Piece[x][y];
@@ -65,28 +92,41 @@ public class Board {
 	 * @param move
 	 */
 	public void updateBoard(String move){
+		
+		//Make sure it works for a move without -
 		String[] moves = move.split(" - ");
 
 		//Removing white spaces
 		for (int i = 0; i < moves.length; i++)
 			moves[i] = moves[i].trim();
-
 		//Removing the piece from first position
+		Piece empty = new Piece(0);
+		
 		Piece piece = new Piece(board[conversion.get(moves[0].charAt(1))][conversion.get(moves[0].charAt(0))]);
-		board[conversion.get(moves[0].charAt(1))][conversion.get(moves[0].charAt(0))] = null;
+		board[conversion.get(moves[0].charAt(1))][conversion.get(moves[0].charAt(0))] = empty;
 
 		//Putting the piece in the new position
 		board[conversion.get(moves[1].charAt(1))][conversion.get(moves[1].charAt(0))] = piece;
 
         //Prints the move string
-        System.out.println("Player " + (piece.getColor() == 4 ? "White" : "Black") + " moved from " + moves[0] + " to " + moves[1]);
-        System.out.println("---------------------------------");
+      //  System.out.println("Player " + (piece.getColor() == 4 ? "White" : "Black") + " moved from " + moves[0] + " to " + moves[1]);
+      //  System.out.println("---------------------------------");
 
-		printBoard();
+	  //	printBoard();
+	}
+	
+	public static Piece[][] deepCopy(Piece[][] input) {
+	    if (input == null)
+	        return null;
+	    Piece[][] result = new Piece[input.length][input[0].length];
+	    for (int r = 0; r < input.length; r++) {
+	        result[r] = input[r].clone();
+	    }
+	    return result;
 	}
 
 	public void printBoard(){
-
+		
         //Check every position on the board
         for(int i = 0; i < board.length; i++){
 

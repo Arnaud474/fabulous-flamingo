@@ -10,7 +10,7 @@ import java.awt.*;
 public class Piece{
 	// 4 = white, 2 = black
 	private int color;
-
+	
 	public Piece(int color) {
 		super();
 		this.color = color;
@@ -22,5 +22,8 @@ public class Piece{
 
     public int getColor() {
         return color;
+    }
+    public boolean isPiece(){
+    	return (color == 4 || color == 2);
     }
 }
