@@ -22,7 +22,6 @@ class Client {
     //Reference to AI
     AI ai = AI.getInstance();
 
-
     private Client(){
         try{
             clientSocket = new Socket("localhost", 8888);
