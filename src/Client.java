@@ -48,18 +48,19 @@ class Client {
 
             //Infinite loop to poll the server (if there is no errors)
             while(!stop){
-
+            	
                 try{
                     char cmd = 0;
-
+                 
                     //Reads the command code from the server
+                    
                     cmd = (char)in.read();
-                    System.out.println(cmd);
                     switch(cmd){
                         //New Game, this client is white
                         case '1':
                             clientColor = 4;
                             formatBoardData(); //Prints bidimensional array properly
+                            play(clientColor, cmd);
                             break;
                         //New Game, this client is black
                         case '2':
@@ -69,15 +70,12 @@ class Client {
                         //Server asks for next move on this client and returns last move played
                         case '3':
                             //Update board state
-                        	ai.setPlayerColor(clientColor);
-                            board.updateBoard(readMove());
-                            //Find best move
-                            String move = ai.findBestMove(clientColor, board);
-                            this.sendMove("3"+move);
+                        	play(clientColor, cmd);
                             break;
                         //Invalid movement (Will never happen)
                         case '4':
-
+                        	System.out.println("Movement invalide, you failed");
+                        	stop = true;
                             break;
                     }
                 }
@@ -114,7 +112,7 @@ class Client {
 
         //Read the buffer
         in.read(buffer, 0, size);
-
+        
         //Put the value from the string inside an array
         String[] boardValues = new String(buffer).trim().split(" ");
 
@@ -139,10 +137,39 @@ class Client {
         int size = in.available();
 
         in.read(buffer, 0, size);
-
         return new String(buffer);
     }
-
+    private void play(int color, char cmd){
+    	if(color == 4){
+    		
+    		ai.setPlayerColor(clientColor);
+    		if(cmd == '3'){
+    			 try {
+    	    			board.updateBoard(readMove());
+    	    		} catch (IOException e) {
+    	    			// TODO Auto-generated catch block
+    	    			e.printStackTrace();
+    	    		}
+    		}
+    		String move = ai.findBestMove(clientColor, board);
+            board.updateBoard(move);
+            this.sendMove(move);
+    	}
+    	else if(color == 2){
+    		ai.setPlayerColor(clientColor);
+    		 try {
+     			board.updateBoard(readMove());
+     		} catch (IOException e) {
+     			// TODO Auto-generated catch block
+     			e.printStackTrace();
+     		}
+            //Find best move
+            String move = ai.findBestMove(clientColor, board);
+            board.updateBoard(move);
+            this.sendMove(move);
+    	}
+    	
+    }
     /**
      * Send move to the game server move must be in either of these formats
      * D4D5 D4 D5
@@ -151,11 +178,12 @@ class Client {
      */
     private void sendMove(String move){
     	
-       
-    	
     	try {
-    		 PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
-    		 writer.println(move);
+    		System.out.println(move);
+    		byte[] buffer = move.getBytes();
+    		int size = buffer.length;
+    		out.write(buffer, 0, size);
+    		out.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
