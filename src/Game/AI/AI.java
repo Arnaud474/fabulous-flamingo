@@ -56,7 +56,7 @@ public class AI {
 					}
 					break;
 				case 6:
-					if (obstacle.getX() < j){
+					if (j > obstacle.getX()){
 						isObstacle = true;
 					}
 					break;
@@ -64,12 +64,12 @@ public class AI {
 					System.out.println("TRUMP FOR PRESIDENT");
 					break;
 				case 4:
-					if (obstacle.getX() < j) {
+					if (j < obstacle.getX()) {
 						isObstacle = true;
 					}
 					break;
 				case 3:
-					if ((i) < obstacle.getY() && (j) < obstacle.getX()) {
+					if ((i) < obstacle.getY() && (j) > obstacle.getX()) {
 						isObstacle = true;
 					}
 					break;
@@ -80,7 +80,7 @@ public class AI {
 
 					break;
 				case 1:
-					if ((i) < obstacle.getY() && (j) > obstacle.getX()) {
+					if ((i) < obstacle.getY() && (j) < obstacle.getX()) {
 						isObstacle = true;
 					}
 					break;
