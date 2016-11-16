@@ -54,7 +54,7 @@ public class AI {
 					}
 					break;
 				case 6:
-					if (j > obstacle.getX()){
+					if (j > obstacle.getX()) {
 						isObstacle = true;
 					}
 					break;
@@ -140,7 +140,7 @@ public class AI {
 
 							// If the Piece is of not our color, it is an
 							// obstacle
-							if (b[y][j].getColor() != color ) {
+							if (b[y][j].getColor() != color) {
 								obstacleY.add(new Point(j, y));
 							}
 						}
@@ -254,13 +254,16 @@ public class AI {
 								moves.add(new Move(b[i][j], new Point(j, i), new Point(j, i + countY), TYPE_MOVE));
 							}
 							/*
-							if (obstacleY != null && (i + countY) < obstacleY.getY()) {
-								moves.add(new Move(b[i][j], new Point(j, i), new Point(j, i + countY), TYPE_MOVE));
-							} else if (obstacleY != null && (i + countY) == obstacleY.getY()) {
-								moves.add(new Move(b[i][j], new Point(j, i), new Point(j, i + countY), TYPE_EAT));
-							} else if (obstacleY == null) {
-								moves.add(new Move(b[i][j], new Point(j, i), new Point(j, i + countY), TYPE_MOVE));
-							}*/
+							 * if (obstacleY != null && (i + countY) <
+							 * obstacleY.getY()) { moves.add(new Move(b[i][j],
+							 * new Point(j, i), new Point(j, i + countY),
+							 * TYPE_MOVE)); } else if (obstacleY != null && (i +
+							 * countY) == obstacleY.getY()) { moves.add(new
+							 * Move(b[i][j], new Point(j, i), new Point(j, i +
+							 * countY), TYPE_EAT)); } else if (obstacleY ==
+							 * null) { moves.add(new Move(b[i][j], new Point(j,
+							 * i), new Point(j, i + countY), TYPE_MOVE)); }
+							 */
 						}
 					}
 
@@ -322,11 +325,11 @@ public class AI {
 							}
 						}
 					}
-										// D9 MOVE
+					// D9 MOVE
 					if ((i + (countD1 + countD9 - 1)) < b[i].length && (j + (countD1 + countD9 - 1)) < b[i].length) {
 						if (((Piece) b[i + (countD1 + countD9 - 1)][j + (countD1 + countD9 - 1)]).getColor() != color) {
 							// Check for obstacles
-							
+
 							if (!checkObstacles(obstacleD9, i + (countD1 + countD9 - 1), j + (countD1 + countD9 - 1),
 									9)) {
 								moves.add(new Move(b[i][j], new Point(j, i),
@@ -362,9 +365,10 @@ public class AI {
 		System.out.println("------------------");
 		System.out.println("Finding best move");
 		System.out.println("------------------");
-		Node best = miniMax(1, color, Integer.MIN_VALUE, Integer.MAX_VALUE, board);
+		int best = miniMax(4, color, Integer.MIN_VALUE, Integer.MAX_VALUE, board);
+		
 		board.printBoard();
-		return ((Move) best.move).toString();
+		return selectedMove.toString();
 	}
 
 	public static void attributeCosts(ArrayList<Move> array) {
@@ -397,44 +401,90 @@ public class AI {
 		}
 	}
 
-	public static Node miniMax(int depth, int color, int alpha, int beta, Board boardParam) {
-		/*
-		 * Node moveValue = new Node(); if(depth == 0){
-		 * 
-		 * return moveValue; }
-		 */
-		ArrayList<Move> moves = INSTANCE.findAllPossibleMoves(color, boardParam);
-		attributeCosts(moves);
-		Iterator<Move> iterator = moves.iterator();
-		Node moveNode = INSTANCE.new Node();
-		boolean isMax = (color == PLAYER_COLOR);
+	public static int miniMax(int depth, int color, int alpha, int beta, Board boardParam) {
+		int value = 0;
 		if (depth == 0) {
-			moveNode.value = Board.evaluateBoard();
-			return moveNode;
+			return boardParam.evaluateBoard();
 		}
-		while (iterator.hasNext()) {
-			Board boardTmp = new Board(boardParam.getBoard());
-			Move currentMove = iterator.next();
-			String move = currentMove.toString();
-			boardTmp.updateBoard(move);
-			if (isMax) {
-				moveNode = miniMax(depth - 1, opponentColor(), alpha, beta, boardTmp);
-				if (moveNode.value > alpha) {
+		boolean isMax = (color == PLAYER_COLOR);
+		if (isMax) {
+			value = Integer.MIN_VALUE;
+			ArrayList<Move> moves = INSTANCE.findAllPossibleMoves(color, boardParam);
+			attributeCosts(moves);
+			Iterator<Move> iterator = moves.iterator();
+			while (iterator.hasNext()) {
+				// new temporary board to apply move
+				Board boardTmp = new Board(boardParam.getBoard());
+				// loop through moves
+				Move currentMove = iterator.next();
+				// Apply move to board
+				String move = currentMove.toString();
+				boardTmp.updateBoard(move);
+
+				// Go deeper
+				int temp = miniMax(depth - 1, opponentColor(), alpha, beta, boardTmp);
+
+				value = Integer.max(value, temp);
+
+				if (value == Integer.max(alpha, value)) {
+					alpha = Integer.max(alpha, value);
 					selectedMove = currentMove;
-					alpha = moveNode.value;
 				}
-			} else {
-				moveNode = miniMax(depth - 1, PLAYER_COLOR, alpha, beta, boardTmp);
-				if (moveNode.value < beta) {
-					beta = moveNode.value;
+				if (beta <= alpha) {
+					break;
+				}
+				return value;
+			}
+		} else {
+			value = Integer.MAX_VALUE;
+			ArrayList<Move> moves = INSTANCE.findAllPossibleMoves(color, boardParam);
+			attributeCosts(moves);
+			Iterator<Move> iterator = moves.iterator();
+			while (iterator.hasNext()) {
+				// new temporary board to apply move
+				Board boardTmp = new Board(boardParam.getBoard());
+				// loop through moves
+				Move currentMove = iterator.next();
+				// Apply move to board
+				String move = currentMove.toString();
+				boardTmp.updateBoard(move);
+
+				// Go deeper
+				int temp = miniMax(depth - 1, PLAYER_COLOR, alpha, beta, boardTmp);
+
+				value = Integer.min(value, temp);
+
+				if (value == Integer.min(beta, value)) {
+					beta = Integer.min(beta, value);
 					selectedMove = currentMove;
 				}
+				if (beta <= alpha) {
+					break;
+				}
+				return value;
 			}
-			if (alpha >= beta) {
-				break;
-			}
+			
 		}
-		return (isMax) ? INSTANCE.new Node(selectedMove, alpha) : INSTANCE.new Node(selectedMove, beta);
+		// should never happen
+		return value;
+		
+		/*
+		 * ArrayList<Move> moves = INSTANCE.findAllPossibleMoves(color,
+		 * boardParam); attributeCosts(moves); Iterator<Move> iterator =
+		 * moves.iterator(); Node moveNode = INSTANCE.new Node(); boolean isMax
+		 * = (color == PLAYER_COLOR); if (depth == 0) { moveNode.value =
+		 * Board.evaluateBoard(); return moveNode; } while (iterator.hasNext())
+		 * { Board boardTmp = new Board(boardParam.getBoard()); Move currentMove
+		 * = iterator.next(); String move = currentMove.toString();
+		 * boardTmp.updateBoard(move); if (isMax) { moveNode = miniMax(depth -
+		 * 1, opponentColor(), alpha, beta, boardTmp); if (moveNode.value >
+		 * alpha) { selectedMove = currentMove; alpha = moveNode.value; } } else
+		 * { moveNode = miniMax(depth - 1, PLAYER_COLOR, alpha, beta, boardTmp);
+		 * if (moveNode.value < beta) { beta = moveNode.value; selectedMove =
+		 * currentMove; } } if (alpha >= beta) { break; } } return (isMax) ?
+		 * INSTANCE.new Node(selectedMove, alpha) : INSTANCE.new
+		 * Node(selectedMove, beta);
+		 */
 
 	}
 
