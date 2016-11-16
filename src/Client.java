@@ -8,7 +8,7 @@ import java.net.*;
 import java.util.Arrays;
 
 
-class Client {
+public class Client {
 
     private static Client INSTANCE;
 

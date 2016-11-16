@@ -5,11 +5,9 @@ import Game.Piece;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Random;
 
-import com.sun.xml.internal.ws.developer.SerializationFeature;
 
 public class AI {
 
