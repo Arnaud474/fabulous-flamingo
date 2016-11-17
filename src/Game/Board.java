@@ -125,10 +125,51 @@ public class Board{
 	    }
 	    return result;
 	}
-	public static int evaluateBoard(){
+	public int evaluateBoard(){
 		Random rand = new Random();
 		return rand.nextInt(100+100) - 100;
 		
+	}
+	public boolean gameOver(){
+		boolean gg = true;
+		
+		for (int i = 0; i < board.length; i++) {
+			if(!gg){
+				break;
+			}
+			for (int j = 0; j < board[0].length; j++) {
+				if(board[i][j].isPiece()){
+					if(i-1 >= 0 && j-1 >= 0 && board[i-1][j-1] != null && board[i-1][j-1].getColor() == board[i][j].getColor()){
+						break;
+					}
+					if(i-1 >= 0 && board[i-1][j] != null && board[i-1][j].getColor() == board[i][j].getColor()){
+						break;
+					}
+					if(i-1 >= 0 && j+1 < board[0].length && board[i-1][j+1] != null && board[i-1][j+1].getColor() == board[i][j].getColor()){
+						break;
+					}
+					
+					if(j-1 >= 0 && board[i][j-1] != null && board[i][j-1].getColor() == board[i][j].getColor()){
+						break;
+					}if(j+1 < board[0].length && board[i][j+1] != null && board[i][j+1].getColor() == board[i][j].getColor()){
+						break;
+					}
+					
+					if(i+1 <board[0].length && j-1 >= 0 && board[i+1][j-1] != null && board[i+1][j-1].getColor() == board[i][j].getColor()){
+						break;
+					}
+					if(i+1 <board[0].length && board[i+1][j] != null && board[i+1][j].getColor() == board[i][j].getColor()){
+						break;
+					}
+					if(i+1 <board[0].length && j+1 < board[0].length && board[i+1][j+1] != null && board[i+1][j+1].getColor() == board[i][j].getColor()){
+						break;
+					}
+					gg = false;
+				}
+			}
+			
+		}
+		return gg=false;
 	}
 	public void printBoard(){
 		
