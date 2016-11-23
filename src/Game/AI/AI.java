@@ -1,12 +1,17 @@
 package Game.AI;
 
+
+
+import Game.AI.Heuristic.Heuristic;
 import Game.Board;
 import Game.Piece;
+
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
+
 
 public class AI {
 
@@ -16,6 +21,8 @@ public class AI {
 	private static int PLAYER_COLOR = 0;
 	private static int OPPONENT_COLOR = 0;
 	private static Move selectedMove = null;
+	private static Heuristic heuristic = new Heuristic();
+
 	private static int DEPTH_MAX = 4;
 	private AI() {
 	}
@@ -117,7 +124,7 @@ public class AI {
 
 					// Check number of pieces in the same ROW/COLUMN (Check if
 					// blocked by another color)
-					ArrayList<Point> obstacleX = new <Point>ArrayList();
+					ArrayList<Point> obstacleX = new ArrayList<Point>();
 					int countX = 0;
 
 					// Horizontal check on all spaces
@@ -135,7 +142,7 @@ public class AI {
 						}
 					}
 
-					ArrayList<Point> obstacleY = new <Point>ArrayList();
+					ArrayList<Point> obstacleY = new ArrayList<Point>();
 					int countY = 0;
 					// Vertical check on all spaces
 					for (int y = 0; y < b[i].length; y++) {
@@ -202,7 +209,7 @@ public class AI {
 						yD--;
 					}
 					// Diagonal 9 check on all spaces
-					ArrayList<Point> obstacleD9 = new <Point>ArrayList();
+					ArrayList<Point> obstacleD9 = new ArrayList<Point>();
 					int countD9 = 0;
 					yD = j;
 					for (int x = i; x < b[i].length && yD < b[i].length; x++) {
@@ -410,7 +417,7 @@ public class AI {
 	public static int miniMax(int depth, int color, int alpha, int beta, Board boardParam) {
 		// If terminal node or GG
 		if(depth == 0){
-			int value = boardParam.evaluateBoard();
+			int value = boardParam.evaluateBoard(heuristic, color);
 			return value; 
 		}
 		

@@ -1,5 +1,7 @@
 package Game;
 
+import Game.AI.Heuristic.Heuristic;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -125,10 +127,8 @@ public class Board{
 	    }
 	    return result;
 	}
-	public int evaluateBoard(){
-		Random rand = new Random();
-		return rand.nextInt(100+100) - 100;
-		
+	public int evaluateBoard(Heuristic h, int currentColor){
+		return h.calculate(this, currentColor);
 	}
 	public boolean gameOver(){
 		boolean gg = true;

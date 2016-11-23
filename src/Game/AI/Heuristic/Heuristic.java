@@ -1,7 +1,7 @@
 package Game.AI.Heuristic;
 
 import Game.AI.Heuristic.Strategies.AggressiveStrategy;
-import Game.AI.Heuristic.Strategies.PassiveStrategy;
+import Game.AI.Heuristic.Strategies.GeneralStrategy;
 import Game.AI.Heuristic.Strategies.Strategy;
 import Game.AI.Move;
 import Game.Board;
@@ -15,16 +15,16 @@ public class Heuristic {
 
     //INSTANCE OF POSSIBLE STRATEGIES
     private AggressiveStrategy aggroStrat; //Strategy to link pieces togheter
-    private PassiveStrategy passStrat; //Strategy to eat pieces and block moves from opponent
+    private GeneralStrategy generalStrat; //Strategy to eat pieces and block moves from opponent
 
     private Strategy strat;
 
     public Heuristic(){
 
         aggroStrat = new AggressiveStrategy();
-        passStrat = new PassiveStrategy();
+        generalStrat = new GeneralStrategy();
 
-        this.strat = passStrat;
+        this.strat = generalStrat;
     }
 
     /**
@@ -32,12 +32,14 @@ public class Heuristic {
      *
      * @param board
      */
-    public void calculate(Board board, ArrayList<Move> moves){
+    public int calculate(Board board, int currentColor){
 
         //CONDITIONS TO DECIDE WHICH STRATEGY TO USE
-        chooseStrategy(board, moves);
+        chooseStrategy(board, currentColor);
 
-        strat.calculateValues(board, moves);
+        strat.calculateValues(board, currentColor);
+
+        return 0;
     }
 
     /**
@@ -45,7 +47,7 @@ public class Heuristic {
      *
      * @param board
      */
-    public void chooseStrategy(Board board, ArrayList<Move> moves){
+    public void chooseStrategy(Board board, int currentColor){
 
     }
 }

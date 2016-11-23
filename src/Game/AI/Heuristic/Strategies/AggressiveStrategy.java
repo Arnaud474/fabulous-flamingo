@@ -10,6 +10,7 @@ import java.util.ArrayList;
  */
 public class AggressiveStrategy extends Strategy {
 
+
     @Override
     public void calculateValues(Board board, ArrayList<Move> moves) {
 
