@@ -15,6 +15,8 @@ public class GeneralStrategy extends Strategy{
     private int value;
     private Board board;
     private int color;
+    private int nbPiecePlayer;
+    
 
     @Override
     public int calculateValues(Board board, int currentColor) {
@@ -22,11 +24,20 @@ public class GeneralStrategy extends Strategy{
         this.value = 0;
         this.board = board;
         this.color = currentColor;
-
+        if(currentColor == 4)
+        	this.nbPiecePlayer = board.countPieces()[0];
+        
+        else
+        	this.nbPiecePlayer = board.countPieces()[1];
+        System.out.println("YABADABADOU");
+        System.out.println(getCenterOfMass(board.getBoard(), currentColor)[0]);
+        System.out.println(getCenterOfMass(board.getBoard(), currentColor)[1]);
         //Check if our player has more pieces than his opponent when doing this move
         //hasNumberAdvantage();
         isBlockingPieces();
-
+        if(board.gameOver(currentColor)){
+        	value = Integer.MAX_VALUE;
+        }
         System.out.println(value);
 
         return value;
@@ -91,7 +102,7 @@ public class GeneralStrategy extends Strategy{
 
                         //Check if not empty and not the same color
                         if(arr[i-1][j-1].getColor() != 0 && arr[i-1][j-1].getColor() != color){
-                            System.out.println("TOP LEFT");
+                            //System.out.println("TOP LEFT");
                             value+=1;
                         }
                     }
@@ -139,6 +150,24 @@ public class GeneralStrategy extends Strategy{
      */
     public void checkNumberOfConnections(){
 
+    }
+    
+    public int[] getCenterOfMass(Piece[][] board, int color){
+    	int totalX = 0;
+    	int totalY = 0;
+    	for(int i = 0; i < board[0].length; i++ ){
+    		for (int j = 0; j < board[0].length; j++) {
+				if(board[i][j].isPiece() && board[i][j].getColor() == color){
+					totalX += i;
+					totalY += j;
+				}
+			}
+    	}
+    	
+    	int[] center = new int[2];
+    	center[0] = totalX/nbPiecePlayer;
+    	center[1] = totalY/nbPiecePlayer;
+    	return center;
     }
 
     /**
