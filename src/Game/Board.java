@@ -11,9 +11,15 @@ import java.util.Random;
  * Created by Arnaud on 10/26/2016.
  */
 public class Board{
+	
+	static final int BOARD_SIZE = 8;
 	//private int[][] board;
 	private HashMap<Character, Integer> conversion;
     private Piece[][] board;
+    
+    int quad[][][] = new int[5][BOARD_SIZE+1][BOARD_SIZE+1];
+    int quadcount[][] = new int[5][6];
+    
     
     public Board(Piece[][] p){
     	super();
@@ -130,49 +136,18 @@ public class Board{
 	public int evaluateBoard(Heuristic h, int currentColor){
 		return h.calculate(this, currentColor);
 	}
-	public boolean gameOver(){
-		boolean gg = true;
+	public boolean gameOver(int player){
+		int e;
 		
-		for (int i = 0; i < board.length; i++) {
-			if(!gg){
-				break;
-			}
-			for (int j = 0; j < board[0].length; j++) {
-				if(board[i][j].isPiece()){
-					if(i-1 >= 0 && j-1 >= 0 && board[i-1][j-1] != null && board[i-1][j-1].getColor() == board[i][j].getColor()){
-						break;
-					}
-					if(i-1 >= 0 && board[i-1][j] != null && board[i-1][j].getColor() == board[i][j].getColor()){
-						break;
-					}
-					if(i-1 >= 0 && j+1 < board[0].length && board[i-1][j+1] != null && board[i-1][j+1].getColor() == board[i][j].getColor()){
-						break;
-					}
-					
-					if(j-1 >= 0 && board[i][j-1] != null && board[i][j-1].getColor() == board[i][j].getColor()){
-						break;
-					}if(j+1 < board[0].length && board[i][j+1] != null && board[i][j+1].getColor() == board[i][j].getColor()){
-						break;
-					}
-					
-					if(i+1 <board[0].length && j-1 >= 0 && board[i+1][j-1] != null && board[i+1][j-1].getColor() == board[i][j].getColor()){
-						break;
-					}
-					if(i+1 <board[0].length && board[i+1][j] != null && board[i+1][j].getColor() == board[i][j].getColor()){
-						break;
-					}
-					if(i+1 <board[0].length && j+1 < board[0].length && board[i+1][j+1] != null && board[i+1][j+1].getColor() == board[i][j].getColor()){
-						break;
-					}
-					gg = false;
-				}
-			}
-			
-		}
-		return gg=false;
+		e = (quadcount[player][1]-quadcount[player][3]-2*quadcount[player][5])/4;
+		
+		return false;
 	}
-	public void printBoard(){
-		
+	
+	/**
+	 * 
+	 */
+	public void printBoard(){ 
         //Check every position on the board
         for(int i = 0; i < board.length; i++){
 
