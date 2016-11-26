@@ -23,7 +23,7 @@ public class AI {
 	private static Move selectedMove = null;
 	private static Heuristic heuristic = new Heuristic();
 
-	private static int DEPTH_MAX = 4;
+	private static int DEPTH_MAX = 2;
 	private AI() {
 	}
 

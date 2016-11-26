@@ -187,4 +187,36 @@ public class Board{
             System.out.print('\n');
         }
     }
+
+	/**
+	 *
+	 * Returns the count of pieces on the board
+	 *
+	 * @return An array of two integers [0] = count of white pieces, [1] = count of black pieces
+	 */
+	public int[] countPieces(){
+
+		int[] count = new int[2];
+
+		Arrays.fill(count, 0);
+
+		int color = 0;
+
+		for(int i = 0; i < board.length; i++){
+
+			for(int j= 0; j < board[0].length; j++){
+
+				color = board[i][j].getColor();
+
+				//If 4 increment pos 0 in array else increment pos 1
+				if(color == 4)
+					count[0]++;
+				else if(color == 2)
+					count[1]++;
+			}
+
+		}
+
+		return count;
+	}
 }

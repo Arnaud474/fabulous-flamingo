@@ -12,7 +12,9 @@ public class AggressiveStrategy extends Strategy {
 
 
     @Override
-    public void calculateValues(Board board, int currentColor) {
+    public int calculateValues(Board board, int currentColor) {
+        int value = 0;
 
+        return value;
     }
 }

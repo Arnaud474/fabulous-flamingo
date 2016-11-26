@@ -10,5 +10,5 @@ import java.util.ArrayList;
  */
 public abstract class Strategy {
 
-    public abstract void calculateValues(Board board,  int currentColor);
+    public abstract int calculateValues(Board board,  int currentColor);
 }

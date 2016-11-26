@@ -37,9 +37,9 @@ public class Heuristic {
         //CONDITIONS TO DECIDE WHICH STRATEGY TO USE
         chooseStrategy(board, currentColor);
 
-        strat.calculateValues(board, currentColor);
+        
+        return strat.calculateValues(board, currentColor);
 
-        return 0;
     }
 
     /**
