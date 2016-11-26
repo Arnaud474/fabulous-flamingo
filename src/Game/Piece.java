@@ -9,6 +9,10 @@ import java.awt.*;
 // LEGACY
 public class Piece{
 	// 4 = white, 2 = black
+	public static final int EMPTY = 0;
+	public static final int BLACK = 2;
+	public static final int WHITE = 4;
+
 	private int color;
 	
 	public Piece(int color) {
@@ -24,6 +28,6 @@ public class Piece{
         return color;
     }
     public boolean isPiece(){
-    	return (color == 4 || color == 2);
+    	return (color == WHITE || color == BLACK);
     }
 }
