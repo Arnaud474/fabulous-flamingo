@@ -48,6 +48,8 @@ public class AI {
 	public boolean checkObstacles(ArrayList<Point> obstacles, int i, int j, int direction) {
 		boolean isObstacle = false;
 		for (Point obstacle : obstacles) {
+
+
 			if (!isObstacle) {
 				switch (direction) {
 				case 9:
@@ -80,8 +82,11 @@ public class AI {
 					}
 					break;
 				case 3:
+
 					if ((i) < obstacle.getY() && (j) > obstacle.getX()) {
-						isObstacle = true;
+						if(obstacle.getX() == 1 && obstacle.getY() == 3)
+							System.out.println("DONALD TRUMPET");
+						return  true;
 					}
 					break;
 				case 2:
@@ -315,25 +320,26 @@ public class AI {
 						}
 					}
 					// D3 MOVE
-					if ((i + (countD7 + countD3 - 1)) < b[i].length && (j - (countD7 + countD3 - 1)) >= 0) {
-						if (((Piece) b[i + (countD7 + countD3 - 1)][j - (countD7 + countD3 - 1)]).getColor() != color) {
+					if ((i - (countD7 + countD3 - 1)) >= 0 && (j + (countD7 + countD3 - 1)) < b[i].length) {
+						if (((Piece) b[i - (countD7 + countD3 - 1)][j + (countD7 + countD3 - 1)]).getColor() != color) {
 							// Check for obstacles
-							if (!checkObstacles(obstacleD3, i + (countD7 + countD3 - 1), j - (countD7 + countD3 - 1),
+							if (!checkObstacles(obstacleD3, i - (countD7 + countD3 - 1), j + (countD7 + countD3 - 1),
 									3)) {
 								moves.add(new Move(b[i][j], new Point(j, i),
-										new Point(j - (countD7 + countD3 - 1), i + (countD7 + countD3 - 1)),
+										new Point(j + (countD7 + countD3 - 1), i - (countD7 + countD3 - 1)),
 										TYPE_MOVE));
 							}
 						}
 					}
+
 					// D7 MOVE
-					if ((i - (countD7 + countD3 - 1)) >= 0 && (j + (countD7 + countD3 - 1)) < b[i].length) {
-						if (((Piece) b[i - (countD7 + countD3 - 1)][j + (countD7 + countD3 - 1)]).getColor() != color) {
+					if ((i + (countD7 + countD3 - 1)) < b[i].length && (j - (countD7 + countD3 - 1))  >= 0) {
+						if (((Piece) b[i + (countD7 + countD3 - 1)][j - (countD7 + countD3 - 1)]).getColor() != color) {
 							// Check for obstacles
-							if (!checkObstacles(obstacleD7, i - (countD7 + countD3 - 1), j + (countD7 + countD3 - 1),
+							if (!checkObstacles(obstacleD7, i + (countD7 + countD3 - 1), j - (countD7 + countD3 - 1),
 									7)) {
 								moves.add(new Move(b[i][j], new Point(j, i),
-										new Point(j + (countD7 + countD3 - 1), i - (countD7 + countD3 - 1)),
+										new Point(j - (countD7 + countD3 - 1), i + (countD7 + countD3 - 1)),
 										TYPE_MOVE));
 							}
 						}
