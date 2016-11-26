@@ -180,7 +180,7 @@ public class AI {
 					ArrayList obstacleD3 = new ArrayList();
 					int countD3 = 0;
 					yD = j;
-					for (int x = i; x >= 0 && yD < b.length; x--) {
+					for (int x = i; x >= 0 && yD < b.length; x++) {
 						if (b[x][yD] != null && ((Piece) b[x][yD]).isPiece()) {
 							countD3++;
 
