@@ -16,9 +16,9 @@ public class Board{
 	//private int[][] board;
 	private HashMap<Character, Integer> conversion;
     private Piece[][] board;
-    
-    int quad[][][] = new int[5][BOARD_SIZE+1][BOARD_SIZE+1];
-    int quadcount[][] = new int[5][6];
+   
+    private int quad[][][] = new int[5][BOARD_SIZE+1][BOARD_SIZE+1];
+    private int quadcount[][] = new int[5][6];
     
     
     public Board(Piece[][] p){
@@ -80,6 +80,14 @@ public class Board{
 		return board;
 	}
 
+	public int[][][] getQuad() {
+		return quad;
+	}
+
+	public int[][] getQuadcount() {
+		return quadcount;
+	}
+
 	public void setBoard(String[] state) {
 
 		//Turn the array of String into a bidimensional array of integers
@@ -92,7 +100,6 @@ public class Board{
             //Super efficient one-liner of destiny
             board[i/board.length][i % board[0].length] = new Piece(Integer.parseInt(state[i]));
         }
-
 	}
 
 	/**
@@ -137,11 +144,16 @@ public class Board{
 		return h.calculate(this, currentColor);
 	}
 	public boolean gameOver(int player){
+		recountQuads();
 		int e;
 		
 		e = (quadcount[player][1]-quadcount[player][3]-2*quadcount[player][5])/4;
 		
-		return false;
+		if(e>1)
+			return false;
+		
+		
+			return true;
 	}
 	
 	/**
@@ -194,4 +206,61 @@ public class Board{
 
 		return count;
 	}
+	
+	private void recountQuads() {
+
+	      for (int i = 0; i < 6; i++ )
+	        quadcount[2][i] = quadcount[4][i] = 0;
+	      for (int i = 0; i < 9; i++) {
+	        for (int j = 0; j < 9; j++) {
+	          quad[2][i][j] = quadValue(i, j, 2); // # of pieces in quad, 5 for diagonals per side
+	          quad[4][i][j] = quadValue(i, j, 4);
+	          quadcount[2][quad[2][i][j]]++; // quad counts per side
+	          quadcount[4][quad[4][i][j]]++;
+	        }
+	      }
+	    }
+	/**
+     * Helper function for recountQuads. For this quad, counts the number of
+     * pieces in the quad of color side. If the count = 2 and they are a
+     * diagonal return 5 otherwise return the count.
+     *
+     * @param x integer value for quad x
+     * @param y integer value for quad y
+     * @param side integer of player to calculate (PLAYER_WHITE, PLAYER_BLACK)
+     * @return integer count of pieces of color side in quad or 5 if diagonal
+     */
+    private int quadValue(int x, int y, int side) {
+        int counter = 0;
+        if ( checker_of(side,x-1,y-1) )
+            counter++;
+        if ( checker_of(side,x,y-1) )
+            counter++;
+        if ( checker_of(side,x-1,y) )
+            counter++;
+        if ( checker_of(side,x,y) )
+            counter++;
+        if (counter == 2 && ((checker_of(side,x,y) && checker_of(side,x-1,y-1))
+                             || (checker_of(side,x-1,y) && checker_of(side,x,y-1))))
+            return 5;
+        return counter;
+    }
+    
+    /**
+     * Outputs whether the checker in location [x,y] is owned by the player.
+     *
+     * @param player int The player to test [PLAYER_WHITE,PLAYER_BLACK]
+     * @param x int The column value to test.
+     * @param y int The row value to test.
+     * @return final boolean True if player present
+     */
+    public final boolean checker_of( int player, int x, int y ) {
+        if ( x < 0 || x >= BOARD_SIZE || y < 0 || y >= BOARD_SIZE )
+          return false;
+        if ( board[x][y].getColor() != player )
+          return false;
+        return true;
+    }
+    
+    
 }

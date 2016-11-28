@@ -87,8 +87,6 @@ public class AI {
 				case 3:
 
 					if ((i) < obstacle.getY() && (j) > obstacle.getX()) {
-						if(obstacle.getX() == 1 && obstacle.getY() == 3)
-							System.out.println("DONALD TRUMPET");
 						return  true;
 					}
 					break;
@@ -428,7 +426,7 @@ public class AI {
 
 	public static int miniMax(int depth, int color, int alpha, int beta, Board boardParam) {
 		// If terminal node or GG
-		if(depth == 0){
+		if(depth == 0 || boardParam.gameOver(color)){
 			int value = boardParam.evaluateBoard(heuristic, color);
 			return value; 
 		}
@@ -475,4 +473,26 @@ public class AI {
 			return beta;
 		}
 	}
+	
+	/*****
+	protected void refreshDataStructures() {
+	      recountQuads();
+	      reloadPieceLists();
+	      for ( int i = 0; i < BOARD_SIZE; i++ ) {
+	        vertical_count[i] = horizontal_count[i] = forward_diag_count[i] = 0;
+	        back_diag_count[i] = forward_diag_count[i+BOARD_INDEX] = 0;
+	        back_diag_count[i+BOARD_INDEX] = 0;
+	      }
+	      for ( int i = 0; i < BOARD_SIZE; i++ )
+	        for ( int j = 0; j < BOARD_SIZE; j++ ){
+	          if (mBoard[i][j] != EMPTY_SQUARE ) {
+	            vertical_count[i]++;
+	            horizontal_count[j]++;
+	            forward_diag_count[i + (BOARD_INDEX - j)]++;
+	            back_diag_count[i + j]++;
+	          }
+	        }
+	      System.out.println("DoneRefresh");
+	    }
+	    */
 }
