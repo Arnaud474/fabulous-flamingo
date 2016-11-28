@@ -96,6 +96,10 @@ public class Board {
 		}
 	}
 
+	public int[][][] getQuad() {
+		return quad;
+	}
+
 	/**
 	 * Update the board when a movement is done
 	 *
