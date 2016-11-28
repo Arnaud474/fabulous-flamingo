@@ -347,10 +347,4 @@ public class GeneralStrategy extends Strategy{
     	return center;
     }
 
-    /**
-     * Check if the move breaks an ennemy connection (Quad)
-     */
-    
-    
-    
 }
