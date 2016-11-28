@@ -1,6 +1,7 @@
 package Game.AI.Heuristic.Strategies;
 
 import Game.AI.Move;
+import Game.Utilities.Tools;
 import Game.Board;
 import Game.Piece;
 
@@ -17,7 +18,7 @@ public class GeneralStrategy extends Strategy{
     private Board board;
     private int color;
     private int nbPiecePlayer;
-    
+    private ArrayList<ArrayList> playerGroups = new ArrayList<ArrayList>();
 
     @Override
     public int calculateValues(Board board, int currentColor) {
@@ -25,7 +26,10 @@ public class GeneralStrategy extends Strategy{
         this.value = 0;
         this.board = board;
         this.color = currentColor;
-
+        
+        // Sets the lists of pieces
+        Tools.setListOfPieces(board);
+        
         if(currentColor == 4)
         	this.nbPiecePlayer = board.countPieces()[0];
         

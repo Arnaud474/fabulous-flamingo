@@ -25,11 +25,13 @@ public class Tools {
 	 */
 	public static void setListOfPieces(Board b){
 		for (int i = 0; i < Board.BOARD_SIZE; i++) {
-			for (int j = 0; j < Board.BOARD_SIZE; i++) {
+			for (int j = 0; j < Board.BOARD_SIZE; j++) {
 				if(b.getBoard()[i][j].getColor() == Board.COLOR_BLACK){
+					b.getBoard()[i][j].setXY(i, j);
 					b.blackPieces.add(b.getBoard()[i][j]);
 				}
 				else if(b.getBoard()[i][j].getColor() == Board.COLOR_WHITE){
+					b.getBoard()[i][j].setXY(i, j);
 					b.whitePieces.add(b.getBoard()[i][j]);
 				}
 			}

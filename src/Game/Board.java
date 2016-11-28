@@ -267,5 +267,14 @@ public class Board{
         return true;
     }
     
+    public ArrayList<Piece> getPiecesList(int color){
+    	if(color == COLOR_BLACK){
+    		return blackPieces;
+    	}
+    	else{
+    		return whitePieces;
+    	}
+    }
+    
     
 }

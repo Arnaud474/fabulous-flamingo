@@ -2,7 +2,7 @@ package Game.AI.Heuristic.Strategies;
 
 import Game.AI.Move;
 import Game.Board;
-
+import Game.Utilities.*;
 import java.util.ArrayList;
 
 /**
