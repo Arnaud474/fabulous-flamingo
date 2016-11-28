@@ -49,7 +49,7 @@ public class GeneralStrategy extends Strategy{
         }
 
         //System.out.println(value);
-
+        System.out.println("VALUE:___________________  = " + value);
         return value;
     }
 
@@ -261,7 +261,7 @@ public class GeneralStrategy extends Strategy{
     }
 
     public void differenceWithCenterOfMass(){
-
+    	/*
         //Array of pieces
         Piece[][] arr = board.getBoard();
 
@@ -299,7 +299,32 @@ public class GeneralStrategy extends Strategy{
         //So a board with pieces with a smaller difference from the center of mass will score better
         value+= lcm/(diffX+ 1);
         value+= lcm/(diffY + 1);
-
+		*/
+    	
+    	ArrayList<Piece> list = board.getPiecesList(this.color);
+    	
+    	int[] centerOfMass = getCenterOfMass(board.getBoard(), color);
+    	Piece centerPiece = new Piece(color);
+    	centerPiece.setXY(centerOfMass[0], centerOfMass[1]);
+    	 //WE TAKE THE Least Common Multiplier OF 1 to 8, which is 840
+        int lcm = 420;
+        
+        int distance = 0;
+    	
+        for (Piece p:list) {
+        	distance += calcDistanceBetweenPieces(p, centerPiece);
+		}
+        
+    	System.out.println(lcm);
+    	System.out.println(distance);
+    	value += lcm/distance;
+    	
+    }
+    
+    private double calcDistanceBetweenPieces(Piece one, Piece two){
+    	int xSq = (int) Math.pow(one.x-two.x,2);
+    	int YSq = (int) Math.pow(one.y-two.y,2);
+    	return Math.sqrt(xSq+YSq);
     }
     
     public int[] getCenterOfMass(Piece[][] board, int color){
@@ -325,5 +350,7 @@ public class GeneralStrategy extends Strategy{
     /**
      * Check if the move breaks an ennemy connection (Quad)
      */
-
+    
+    
+    
 }
