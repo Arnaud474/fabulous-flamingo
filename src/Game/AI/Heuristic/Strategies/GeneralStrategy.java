@@ -327,7 +327,7 @@ public class GeneralStrategy extends Strategy{
     	return Math.sqrt(xSq+YSq);
     }
     
-    public int[] getCenterOfMass(Piece[][] board, int color){
+    private int[] getCenterOfMass(Piece[][] board, int color){
     	int totalX = 0;
     	int totalY = 0;
     	for(int i = 0; i < board[0].length; i++ ){
@@ -346,5 +346,19 @@ public class GeneralStrategy extends Strategy{
         System.out.println(Arrays.toString(center));
     	return center;
     }
+    private void getListOfGroups(){
+    	ArrayList<Piece> list = board.getPiecesList(this.color);
+    	
+    	for(Piece p:list){
+    		if(getContacts(p)!=null){
+    			
+    		}
+    	}
+    }
 
+	private Piece getContacts(Piece p) {
+		return null;
+	}
+    
+    
 }
