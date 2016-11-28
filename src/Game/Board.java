@@ -3,6 +3,7 @@ package Game;
 import Game.AI.Heuristic.Heuristic;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
@@ -12,7 +13,9 @@ import java.util.Random;
  */
 public class Board{
 	
-	static final int BOARD_SIZE = 8;
+	public static final int BOARD_SIZE = 8;
+	public static final int COLOR_WHITE = 4;
+	public static final int COLOR_BLACK = 2;
 	//private int[][] board;
 	private HashMap<Character, Integer> conversion;
     private Piece[][] board;
@@ -20,6 +23,8 @@ public class Board{
     private int quad[][][] = new int[5][BOARD_SIZE+1][BOARD_SIZE+1];
     private int quadcount[][] = new int[5][6];
     
+    public ArrayList<Piece> blackPieces = new ArrayList<Piece>();
+    public ArrayList<Piece> whitePieces = new ArrayList<Piece>();
     
     public Board(Piece[][] p){
     	super();

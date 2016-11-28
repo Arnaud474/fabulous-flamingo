@@ -23,7 +23,7 @@ public class Tools {
 	 * 
 	 * Sets the list of each color's pieces inside the board
 	 */
-	/*public static void setListOfPieces(Board b){
+	public static void setListOfPieces(Board b){
 		for (int i = 0; i < Board.BOARD_SIZE; i++) {
 			for (int j = 0; j < Board.BOARD_SIZE; i++) {
 				if(b.getBoard()[i][j].getColor() == Board.COLOR_BLACK){
@@ -34,5 +34,5 @@ public class Tools {
 				}
 			}
 		}
-	}*/
+	}
 }
