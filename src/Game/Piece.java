@@ -12,7 +12,8 @@ public class Piece{
 	public static final int EMPTY = 0;
 	public static final int BLACK = 2;
 	public static final int WHITE = 4;
-
+	public int x;
+	public int y;
 	private int color;
 	
 	public Piece(int color) {
@@ -29,5 +30,10 @@ public class Piece{
     }
     public boolean isPiece(){
     	return (color == WHITE || color == BLACK);
+    }
+    
+    public void setXY(int x, int y){
+    	this.x = x;
+    	this.y = y;
     }
 }
