@@ -12,10 +12,6 @@ import java.util.Arrays;
  */
 public class GeneralStrategy extends Strategy{
 
-    private int value;
-    private Board board;
-    private int color;
-
     @Override
     public int calculateValues(Board board, int currentColor) {
 
@@ -26,6 +22,7 @@ public class GeneralStrategy extends Strategy{
         //Check if our player has more pieces than his opponent when doing this move
         //hasNumberAdvantage();
         isBlockingPieces();
+
 
         System.out.println(value);
 
@@ -72,44 +69,122 @@ public class GeneralStrategy extends Strategy{
 
         Piece[][] arr = board.getBoard();
 
-
-
         for(int i = 0; i < arr.length; i++){
             for(int j = 0; j < arr[0].length; j++){
 
                 //Check all directions around the piece
 
-                //System.out.println(color);
-
                 //If piece is the good color
                 if(arr[i][j].getColor() == color) {
 
-                    //System.out.println("I : " + i  + " J : " + j);
+                    //1 TOP LEFT
 
-                    //1
-                    if(i == 1 && j > 0 && arr[0].length-1 > j){
+                    // Horzontal Case
+                    if(i == 1 && j > 0 && arr[0].length > j){
 
                         //Check if not empty and not the same color
                         if(arr[i-1][j-1].getColor() != 0 && arr[i-1][j-1].getColor() != color){
-                            System.out.println("TOP LEFT");
+                            value+=1;
+                        }
+                    }
+                    //Vertical Case
+                    else if(j == 1 && i > 0 && arr.length > i){
+                        //Check if not empty and not the same color
+                        if(arr[i-1][j-1].getColor() != 0 && arr[i-1][j-1].getColor() != color){
+                            value+=1;
+                        }
+                    }
+
+                    //2 TOP
+
+                    if(i == 1){
+                        //Check if not empty and not the same color
+                        if(arr[i-1][j].getColor() != 0 && arr[i-1][j].getColor() != color){
                             value+=1;
                         }
                     }
 
 
-                    //2
+                    //3 TOP RIGHT
 
-                    //3
+                    // Horzontal Case
+                    if(i == 1 && j >= 0 && arr[0].length - 1 > j){
 
-                    //4
+                        //Check if not empty and not the same color
+                        if(arr[i-1][j+1].getColor() != 0 && arr[i-1][j+1].getColor() != color){
+                            value+=1;
+                        }
+                    }
+                    //Vertical Case
+                    else if(j == arr[0].length - 2 && i > 0 && arr.length > i){
+                        //Check if not empty and not the same color
+                        if(arr[i-1][j+1].getColor() != 0 && arr[i-1][j+1].getColor() != color){
+                            value+=1;
+                        }
+                    }
 
-                    //6
+                    //4 LEFT
 
-                    //7
+                    if(j == 1){
+                        //Check if not empty and not the same color
+                        if(arr[i][j-1].getColor() != 0 && arr[i][j-1].getColor() != color){
+                            value+=1;
+                        }
+                    }
 
-                    //8
+                    //6 RIGHT
 
-                    //9
+                    if(j == arr[0].length - 2){
+                        //Check if not empty and not the same color
+                        if(arr[i][arr[0].length-1].getColor() != 0 && arr[i][arr[0].length-1].getColor() != color){
+                            value+=1;
+                        }
+                    }
+
+                    //7 BOTTOM LEFT
+
+                    // Horzontal Case
+                    if(i == arr.length - 2 && j > 0 && arr[0].length > j){
+
+                        //Check if not empty and not the same color
+                        if(arr[arr.length - 1][j-1].getColor() != 0 && arr[arr.length - 1][j-1].getColor() != color){
+                            value+=1;
+                        }
+                    }
+                    //Vertical Case
+                    else if(j == arr[0].length - 2 && i > 0 && arr.length > i){
+                        //Check if not empty and not the same color
+                        if(arr[i-1][arr[0].length-1].getColor() != 0 && arr[i-1][arr[0].length-1].getColor() != color){
+                            value+=1;
+                        }
+                    }
+
+                    //8 BOTTOM
+
+                    if(i == (arr.length - 2)){
+                        //Check if not empty and not the same color
+                        if(arr[arr.length - 1][j].getColor() != 0 && arr[arr.length - 1][j].getColor() != color){
+                            value+=1;
+                        }
+                    }
+
+                    //9 BOTTOM RIGHT
+
+                    // Horzontal Case
+                    if(i == arr.length-2 && j >= 0 && arr[0].length - 1 > j){
+
+                        //Check if not empty and not the same color
+                        if(arr[arr.length-1][j+1].getColor() != 0 && arr[arr.length-1][j+1].getColor() != color){
+                            value+=1;
+                        }
+                    }
+                    //Vertical Case
+                    else if(j == arr[0].length - 2 && i > 0 && arr.length-1 > i){
+                        //Check if not empty and not the same color
+                        if(arr[i+1][j+1].getColor() != 0 && arr[i-1][j+1].getColor() != color){
+                            value+=1;
+                        }
+                    }
 
 
                 }

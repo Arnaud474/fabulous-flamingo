@@ -22,8 +22,11 @@ public class AI {
 	private static int OPPONENT_COLOR = 0;
 	private static Move selectedMove = null;
 	private static Heuristic heuristic = new Heuristic();
-
 	private static int DEPTH_MAX = 2;
+
+	public static int numberOfTurns = 0;
+
+
 	private AI() {
 	}
 
@@ -387,6 +390,9 @@ public class AI {
 		int best = miniMax(DEPTH_MAX, color, Integer.MIN_VALUE, Integer.MAX_VALUE, board);
 
 		board.printBoard();
+
+		numberOfTurns++;
+
 		return selectedMove.toString();
 	}
 
