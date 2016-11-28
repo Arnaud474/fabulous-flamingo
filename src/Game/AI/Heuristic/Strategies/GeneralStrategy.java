@@ -238,21 +238,21 @@ public class GeneralStrategy extends Strategy{
                     //If its linked to another quad
 
                     if(quads[i-1][j-1] == 5 && i > 0 && j > 0) //TOP LEFT
-                        value+=10;
+                        value+=5;
                     if(quads[i-1][j] == 5 && i > 0) //TOP
-                        value+=5;
+                        value+=2;
                     if(quads[i-1][j] == 5 && i < quads[0].length-1 && j < quads.length-1) //TOP RIGHT
-                        value+=10;
+                        value+=5;
                     if(quads[i+1][j-1] == 5 && j > 0 && i < quads.length) //BOTTOM LEFT
-                        value+=10;
+                        value+=2;
                     if(quads[i+1][j] == 5 && i < quads.length -1) //BOTTOM
-                        value+=5;
+                        value+=2;
                     if(quads[i+1][j+1] == 5 && j < quads[0].length && i < quads.length) //BOTTOM RIGHT
-                        value+=10;
+                        value+=5;
                     if(quads[i][j-1] == 5 && j > 0) //LEFT
-                        value+=5;
+                        value+=2;
                     if(quads[i][j+1] == 5 && j < quads[0].length -1) //RIGHT
-                        value+=5;
+                        value+=2;
                 }
 
             }
@@ -306,7 +306,7 @@ public class GeneralStrategy extends Strategy{
     	int[] centerOfMass = getCenterOfMass(board.getBoard(), color);
     	Piece centerPiece = new Piece(color);
     	centerPiece.setXY(centerOfMass[0], centerOfMass[1]);
-    	 //WE TAKE THE Least Common Multiplier OF 1 to 8, which is 840
+    	 //WE TAKE THE Least Common Multiplier OF 1 to 7, which is 420
         int lcm = 420;
         
         int distance = 0;
