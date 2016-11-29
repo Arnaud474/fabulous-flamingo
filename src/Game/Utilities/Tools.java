@@ -1,6 +1,10 @@
 package Game.Utilities;
 
+import java.util.ArrayList;
+
 import Game.Board;
+import Game.Group;
+import Game.Piece;
 
 public class Tools {
 	/**
@@ -36,5 +40,59 @@ public class Tools {
 				}
 			}
 		}
+	}
+	
+	
+	public static void setGroupsOfPieces(Board b){
+		  ArrayList<Piece> plist = new ArrayList<Piece>();
+	      int count = 0;
+	      for (int i = 0; i<b.blackPieces.size(); i++) {
+	    	  Piece p = b.blackPieces.get(i);
+	    	  plist.add(p);
+	    	  count++;
+	      }/**
+	      Piece Connectlist = plist;
+	      plist = plist.next;
+	      Connectlist.next = null;
+	      boolean isConnected = true;
+	      int teller = 1;
+	      while (count > 1 && plist != null && isConnected) {
+	          isConnected = false;
+	          Piece p = plist;
+	          for (Piece plist2 = Connectlist; plist2 != null && !isConnected;
+	               plist2 = plist2.next) {
+	              if ((p.x == plist2.x + 1 || p.x == plist2.x - 1
+	                   || p.x == plist2.x)
+	                  && (p.y == plist2.y || p.y == plist2.y + 1
+	                      || p.y == plist2.y - 1)) {
+	                  plist = plist.next;
+	                  p.next = Connectlist;
+	                  Connectlist = p;
+	                  teller++;
+	                  isConnected = true;
+	              }
+	          }
+	          if (!isConnected) {
+	              Piece tracker = plist;
+	              for (p = plist.next; p != null && !isConnected; p = p.next) {
+	                  for (Piece plist2 = Connectlist; plist2 != null && !isConnected;
+	                       plist2 = plist2.next) {
+	                      if ((p.x == plist2.x + 1 || p.x == plist2.x - 1
+	                           || p.x == plist2.x)
+	                          && (p.y == plist2.y || p.y == plist2.y + 1
+	                              || p.y == plist2.y - 1)) {
+	                          tracker.next = p.next;
+	                          p.next = Connectlist;
+	                          Connectlist = p;
+	                          teller++;
+	                          isConnected = true;
+	                      }
+	                  }
+	                  if (!isConnected)
+	                      tracker = p;
+	              }
+	          }
+	      }
+		*/
 	}
 }

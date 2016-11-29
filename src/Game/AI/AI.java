@@ -22,7 +22,7 @@ public class AI {
 	private static int OPPONENT_COLOR = 0;
 	private static Move selectedMove = null;
 	private static Heuristic heuristic = new Heuristic();
-	private static int DEPTH_MAX = 2;
+	private static int DEPTH_MAX = 4;
 
 	public static int numberOfTurns = 0;
 

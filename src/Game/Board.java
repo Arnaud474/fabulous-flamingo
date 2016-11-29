@@ -26,6 +26,10 @@ public class Board{
     public ArrayList<Piece> blackPieces = new ArrayList<Piece>();
     public ArrayList<Piece> whitePieces = new ArrayList<Piece>();
     
+    public ArrayList<Group> blackGroups = new ArrayList<Group>();
+    public ArrayList<Group> whiteGroups = new ArrayList<Group>();
+    
+    
     public Board(Piece[][] p){
     	super();
     	this.board = deepCopy(p);

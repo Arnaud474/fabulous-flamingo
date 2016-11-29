@@ -18,6 +18,7 @@ public class GeneralStrategy extends Strategy{
     private Board board;
     private int color;
     private int nbPiecePlayer;
+    private int averageCenter;
     private ArrayList<ArrayList> playerGroups = new ArrayList<ArrayList>();
 
     @Override
@@ -35,13 +36,22 @@ public class GeneralStrategy extends Strategy{
         
         else
         	this.nbPiecePlayer = board.countPieces()[1];
-
+        
+        
+        
+        
+        
+        
         //Check pieces relative to center of mass
         differenceWithCenterOfMass();
-
+       // differenceWithCenterOfMassOpponents();
         //Check Score with quads
         checkNumberOfQuads();
-
+        //checkNumberOfQuadsOpponent();
+        if(averageCenter >= 2){
+        	 isBlockingPieces();
+        }
+       
         //If game over don't check anything else
         if(board.gameOver(currentColor)){
             value = Integer.MAX_VALUE;
@@ -259,47 +269,48 @@ public class GeneralStrategy extends Strategy{
         }
 
     }
+    public void checkNumberOfQuadsOpponent(){
 
-    public void differenceWithCenterOfMass(){
-    	/*
-        //Array of pieces
-        Piece[][] arr = board.getBoard();
+        //Getting the quads of the current color
+        int[][] quads = board.getQuad()[Tools.getOtherPlayer(color)];
 
-        //Get the center of mass of the current board
-        int[] centerOfMass = getCenterOfMass(arr, color);
+        //Check all quads
+        for(int i = 0; i < quads.length;i++){
 
-        //Check difference between pieces and center of  mass
+            for(int j = 0; j < quads[0].length; j++){
 
-        int numberOfPieces = 0;
-        int diffX = 0;
-        int diffY = 0;
+                //Check if quad has a diagonal
+                if(quads[i][j] == 5)
+                {
+                    //If it contains diagonal
+                    
 
-        //Vertical
-        for(int i = 0; i < arr.length; i++){
+                    //If its linked to another quad
 
-            //Horizontal
-            for(int j = 0; j < arr[0].length; j++){
-
-                //The pieces is the good color
-                if(arr[i][j].getColor() == color){
-                    numberOfPieces++;
-                    diffX += Math.abs(j - centerOfMass[0]);
-                    diffY += Math.abs(i - centerOfMass[1]);
+                    if(quads[i-1][j-1] == 5 && i > 0 && j > 0) //TOP LEFT
+                        value-=5;
+                    if(quads[i-1][j] == 5 && i > 0) //TOP
+                        value-=2;
+                    if(quads[i-1][j] == 5 && i < quads[0].length-1 && j < quads.length-1) //TOP RIGHT
+                        value-=5;
+                    if(quads[i+1][j-1] == 5 && j > 0 && i < quads.length) //BOTTOM LEFT
+                        value-=2;
+                    if(quads[i+1][j] == 5 && i < quads.length -1) //BOTTOM
+                        value-=2;
+                    if(quads[i+1][j+1] == 5 && j < quads[0].length && i < quads.length) //BOTTOM RIGHT
+                        value-=5;
+                    if(quads[i][j-1] == 5 && j > 0) //LEFT
+                        value-=2;
+                    if(quads[i][j+1] == 5 && j < quads[0].length -1) //RIGHT
+                        value-=2;
                 }
+
             }
         }
 
-        //We calculate the average difference to the middle point
-        diffX = diffX/numberOfPieces;
-        diffY = diffY/numberOfPieces;
-
-        //WE TAKE THE Least Common Multiplier OF 1 to 8, which is 840
-        int lcm = 840;
-
-        //So a board with pieces with a smaller difference from the center of mass will score better
-        value+= lcm/(diffX+ 1);
-        value+= lcm/(diffY + 1);
-		*/
+    }
+    public void differenceWithCenterOfMass(){
+    	
     	
     	ArrayList<Piece> list = board.getPiecesList(this.color);
     	
@@ -314,10 +325,31 @@ public class GeneralStrategy extends Strategy{
         for (Piece p:list) {
         	distance += calcDistanceBetweenPieces(p, centerPiece);
 		}
+        averageCenter = distance/list.size();
+    	
+        value += lcm/distance;
+    	
+    }
+public void differenceWithCenterOfMassOpponents(){
+    	
+    	
+    	ArrayList<Piece> list = board.getPiecesList(Tools.getOtherPlayer(color));
+    	
+    	int[] centerOfMass = getCenterOfMass(board.getBoard(), Tools.getOtherPlayer(color));
+    	Piece centerPiece = new Piece(color);
+    	centerPiece.setXY(centerOfMass[0], centerOfMass[1]);
+    	 //WE TAKE THE Least Common Multiplier OF 1 to 7, which is 420
+        int lcm = 420;
+        
+        int distance = 0;
+    	
+        for (Piece p:list) {
+        	distance += calcDistanceBetweenPieces(p, centerPiece);
+		}
         
     	System.out.println(lcm);
     	System.out.println(distance);
-    	value += lcm/distance;
+    	value -= lcm/distance;
     	
     }
     
@@ -346,19 +378,12 @@ public class GeneralStrategy extends Strategy{
         System.out.println(Arrays.toString(center));
     	return center;
     }
-    private void getListOfGroups(){
-    	ArrayList<Piece> list = board.getPiecesList(this.color);
-    	
-    	for(Piece p:list){
-    		if(getContacts(p)!=null){
-    			
-    		}
-    	}
-    }
 
-	private Piece getContacts(Piece p) {
-		return null;
+	private void setListOfGroups() {
+		
 	}
+
+
     
     
 }
