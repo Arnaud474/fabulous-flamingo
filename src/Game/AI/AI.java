@@ -12,24 +12,53 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
-
+/**
+ * The Class AI.
+ */
 public class AI {
 
+	
+
+	//DIRECTIONS TOOLTIP
+	// 1 2 3
+	// 4 X 6
+	// 7 8 9
+	// X=piece
+	
+	/** The instance. */
 	private static AI INSTANCE;
-	private static int TYPE_EAT = 2;
+	
+	/** The type move. */
 	private static int TYPE_MOVE = 1;
+	
+	/** The player color. */
 	private static int PLAYER_COLOR = 0;
+	
+	/** The opponent color. */
 	private static int OPPONENT_COLOR = 0;
+	
+	/** The selected move. */
 	private static Move selectedMove = null;
+	
+	/** The heuristic. */
 	private static Heuristic heuristic = new Heuristic();
+	
+	/** The depth max. */
 	private static int DEPTH_MAX = 4;
 
-	public static int numberOfTurns = 0;
 
 
+	/**
+	 * Instantiates a new ai.
+	 */
 	private AI() {
 	}
 
+	/**
+	 * Gets the single instance of AI.
+	 *
+	 * @return single instance of AI
+	 */
 	public static AI getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new AI();
@@ -38,6 +67,11 @@ public class AI {
 		return INSTANCE;
 	}
 
+	/**
+	 * Sets the player color.
+	 *
+	 * @param color the new player color
+	 */
 	public static void setPlayerColor(int color) {
 		PLAYER_COLOR = color;
 		if(color == 2){
@@ -48,6 +82,15 @@ public class AI {
 		}
 	}
 
+	/**
+	 * Check obstacles.
+	 *
+	 * @param obstacles the obstacles
+	 * @param i the x
+	 * @param j the y
+	 * @param direction the direction
+	 * @return true, if successful
+	 */
 	public boolean checkObstacles(ArrayList<Point> obstacles, int i, int j, int direction) {
 		boolean isObstacle = false;
 		for (Point obstacle : obstacles) {
@@ -108,11 +151,11 @@ public class AI {
 	}
 
 	/**
+	 * Find all possible moves on this board.
 	 *
-	 * Find all possible moves on this board
-	 *
-	 * @param board
-	 * @return
+	 * @param color the color of current player
+	 * @param board the board
+	 * @return the array list
 	 */
 	private ArrayList<Move> findAllPossibleMoves(int color, Board board) {
 
@@ -238,7 +281,7 @@ public class AI {
 						if (((Piece) b[i][j + countX]).getColor() != color) {
 							// Check for obstacles
 							if (!checkObstacles(obstacleX, i, j + countX, 6)) {
-								moves.add(new Move(b[i][j], new Point(j, i), new Point(j + countX, i), TYPE_MOVE));
+								moves.add(new Move(b[i][j], new Point(j, i), new Point(j + countX, i)));
 							}
 						}
 
@@ -249,19 +292,8 @@ public class AI {
 						if (((Piece) b[i][j - countX]).getColor() != color) {
 							// Check for obstacles
 							if (!checkObstacles(obstacleX, i, j - countX, 4)) {
-								moves.add(new Move(b[i][j], new Point(j, i), new Point(j - countX, i), TYPE_MOVE));
+								moves.add(new Move(b[i][j], new Point(j, i), new Point(j - countX, i)));
 							}
-							/*
-							 * if (obstacle != null && (j - count) >
-							 * obstacle.getX()) { moves.add(new Move(b[i][j],
-							 * new Point(j, i), new Point(j - count, i),
-							 * TYPE_MOVE)); } else if (obstacle != null && (j -
-							 * count) == obstacle.getX()) { moves.add(new
-							 * Move(b[i][j], new Point(j, i), new Point(j -
-							 * count, i), TYPE_EAT)); } else if (obstacle ==
-							 * null) { moves.add(new Move(b[i][j], new Point(j,
-							 * i), new Point(j - count, i), TYPE_MOVE)); }
-							 */
 						}
 					}
 
@@ -270,19 +302,8 @@ public class AI {
 						if (((Piece) b[i + countY][j]).getColor() != color) {
 							// Check for obstacles
 							if (!checkObstacles(obstacleY, i + countY, j, 8)) {
-								moves.add(new Move(b[i][j], new Point(j, i), new Point(j, i + countY), TYPE_MOVE));
+								moves.add(new Move(b[i][j], new Point(j, i), new Point(j, i + countY)));
 							}
-							/*
-							 * if (obstacleY != null && (i + countY) <
-							 * obstacleY.getY()) { moves.add(new Move(b[i][j],
-							 * new Point(j, i), new Point(j, i + countY),
-							 * TYPE_MOVE)); } else if (obstacleY != null && (i +
-							 * countY) == obstacleY.getY()) { moves.add(new
-							 * Move(b[i][j], new Point(j, i), new Point(j, i +
-							 * countY), TYPE_EAT)); } else if (obstacleY ==
-							 * null) { moves.add(new Move(b[i][j], new Point(j,
-							 * i), new Point(j, i + countY), TYPE_MOVE)); }
-							 */
 						}
 					}
 
@@ -291,19 +312,8 @@ public class AI {
 						if (((Piece) b[i - countY][j]).getColor() != color) {
 							// Check for obstacles
 							if (!checkObstacles(obstacleY, i - countY, j, 2)) {
-								moves.add(new Move(b[i][j], new Point(j, i), new Point(j, i - countY), TYPE_MOVE));
+								moves.add(new Move(b[i][j], new Point(j, i), new Point(j, i - countY)));
 							}
-							/*
-							 * if (obstacleY != null && (i - countY) >
-							 * obstacleY.getY()) { moves.add(new Move(b[i][j],
-							 * new Point(j, i), new Point(j, i - countY),
-							 * TYPE_MOVE)); } else if (obstacleY != null && (i +
-							 * countY) == obstacleY.getY()) { moves.add(new
-							 * Move(b[i][j], new Point(j, i), new Point(j, i -
-							 * countY), TYPE_EAT)); } else if (obstacleY ==
-							 * null) { moves.add(new Move(b[i][j], new Point(j,
-							 * i), new Point(j, i - countY), TYPE_MOVE)); }
-							 */
 						}
 					}
 
@@ -314,8 +324,7 @@ public class AI {
 							if (!checkObstacles(obstacleD1, i - (countD1 + countD9 - 1), j - (countD1 + countD9 - 1),
 									1)) {
 								moves.add(new Move(b[i][j], new Point(j, i),
-										new Point(j - (countD1 + countD9 - 1), i - (countD1 + countD9 - 1)),
-										TYPE_MOVE));
+										new Point(j - (countD1 + countD9 - 1), i - (countD1 + countD9 - 1))));
 							}
 
 						}
@@ -327,8 +336,7 @@ public class AI {
 							if (!checkObstacles(obstacleD3, i - (countD7 + countD3 - 1), j + (countD7 + countD3 - 1),
 									3)) {
 								moves.add(new Move(b[i][j], new Point(j, i),
-										new Point(j + (countD7 + countD3 - 1), i - (countD7 + countD3 - 1)),
-										TYPE_MOVE));
+										new Point(j + (countD7 + countD3 - 1), i - (countD7 + countD3 - 1))));
 							}
 						}
 					}
@@ -340,8 +348,7 @@ public class AI {
 							if (!checkObstacles(obstacleD7, i + (countD7 + countD3 - 1), j - (countD7 + countD3 - 1),
 									7)) {
 								moves.add(new Move(b[i][j], new Point(j, i),
-										new Point(j - (countD7 + countD3 - 1), i + (countD7 + countD3 - 1)),
-										TYPE_MOVE));
+										new Point(j - (countD7 + countD3 - 1), i + (countD7 + countD3 - 1))));
 							}
 						}
 					}
@@ -353,8 +360,7 @@ public class AI {
 							if (!checkObstacles(obstacleD9, i + (countD1 + countD9 - 1), j + (countD1 + countD9 - 1),
 									9)) {
 								moves.add(new Move(b[i][j], new Point(j, i),
-										new Point(j + (countD1 + countD9 - 1), i + (countD1 + countD9 - 1)),
-										TYPE_MOVE));
+										new Point(j + (countD1 + countD9 - 1), i + (countD1 + countD9 - 1))));
 							}
 						}
 					}
@@ -367,21 +373,14 @@ public class AI {
 	}
 
 	/**
+	 * Finds the best move for a certain color of piece and board layout.
 	 *
-	 * Finds the best move for a certain color of piece and board layout
-	 *
-	 * @param color
-	 *            Color of the client
-	 * @param board
-	 *            The current board layout
-	 * @return
+	 * @param color            Color of the client
+	 * @param board            The current board layout
+	 * @return the string
 	 */
 	public static String findBestMove(int color, Board board) {
-
-		// Find all moves
-		// ArrayList<Move> moves = INSTANCE.findAllPossibleMoves(color, board);
-		// attributeCosts(moves);
-
+		
 		System.out.println("------------------");
 		System.out.println("Finding best move");
 		System.out.println("------------------");
@@ -389,58 +388,45 @@ public class AI {
 
 		board.printBoard();
 
-		numberOfTurns++;
 
 		return selectedMove.toString();
 	}
-
-	public static void attributeCosts(ArrayList<Move> array) {
-		Random r = new Random();
-		for (Move move : array) {
-			move.setCost((r.nextInt(100 + 100) - 100) * move.getType());
-		}
-	}
-
-	/*
-	 * MINIMAX
-	 ****/
-	private class Node {
-		public Move move;
-		public int value;
-
-		public Node() {
-			this.move = null;
-			this.value = 0;
-		}
-
-		public Node(Move move, int value) {
-			this.move = move;
-			this.value = value;
-		}
-
-		@Override
-		public String toString() {
-			return "Node{ move= " + move + " , value=" + value + " }";
-		}
-	}
-
+	
+	
+	/**
+	 * Mini max.
+	 * Uses Minimax alpha/beta algorithm to get the best score for current configuration
+	 * Generates a new temporary board for each different move, removes the need to revert every move
+	 *
+	 * @param depth the depth
+	 * @param color the color
+	 * @param alpha the alpha
+	 * @param beta the beta
+	 * @param boardParam the board param
+	 * @return the int
+	 */
 	public static int miniMax(int depth, int color, int alpha, int beta, Board boardParam) {
+		
 		// If terminal node or GG
 		if(depth == 0 || boardParam.gameOver(color)){
 			int value = boardParam.evaluateBoard(heuristic, color);
 			return value; 
 		}
 		
+		// Get list of moves
 		ArrayList<Move> moves = INSTANCE.findAllPossibleMoves(color, boardParam);
 		Iterator<Move> iterator = moves.iterator();
 		
+		//If maximizing
 		if(color == PLAYER_COLOR){
 			while(iterator.hasNext()){
 				Move currentMove = iterator.next();
 				Board boardTemp = new Board(boardParam.getBoard());
 				boardTemp.updateBoard(currentMove.toString());
+				//Recursion
 				int score = miniMax(depth - 1, OPPONENT_COLOR, alpha, beta, boardTemp);
 				
+				//Elagage
 				if(score > alpha){
 					alpha = score;
 					if(depth == DEPTH_MAX){
@@ -453,13 +439,16 @@ public class AI {
 			}
 			return alpha;
 		}
+		//if minimizing
 		else{
 			while(iterator.hasNext()){
 				Move currentMove = iterator.next();
 				Board boardTemp = new Board(boardParam.getBoard());
 				boardTemp.updateBoard(currentMove.toString());
+				//Recursion
 				int score = miniMax(depth - 1, PLAYER_COLOR, alpha, beta, boardTemp);
 				
+				//Elagage
 				if(score < beta){
 					beta = score;
 					if(depth == DEPTH_MAX){
@@ -473,26 +462,4 @@ public class AI {
 			return beta;
 		}
 	}
-	
-	/*****
-	protected void refreshDataStructures() {
-	      recountQuads();
-	      reloadPieceLists();
-	      for ( int i = 0; i < BOARD_SIZE; i++ ) {
-	        vertical_count[i] = horizontal_count[i] = forward_diag_count[i] = 0;
-	        back_diag_count[i] = forward_diag_count[i+BOARD_INDEX] = 0;
-	        back_diag_count[i+BOARD_INDEX] = 0;
-	      }
-	      for ( int i = 0; i < BOARD_SIZE; i++ )
-	        for ( int j = 0; j < BOARD_SIZE; j++ ){
-	          if (mBoard[i][j] != EMPTY_SQUARE ) {
-	            vertical_count[i]++;
-	            horizontal_count[j]++;
-	            forward_diag_count[i + (BOARD_INDEX - j)]++;
-	            back_diag_count[i + j]++;
-	          }
-	        }
-	      System.out.println("DoneRefresh");
-	    }
-	    */
 }

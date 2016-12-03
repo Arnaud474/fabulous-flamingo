@@ -1,14 +1,8 @@
 package Game.AI.Heuristic;
 
-import Game.AI.AI;
-import Game.AI.Heuristic.Strategies.AggressiveStrategy;
-import Game.AI.Heuristic.Strategies.BeginStrategy;
 import Game.AI.Heuristic.Strategies.GeneralStrategy;
 import Game.AI.Heuristic.Strategies.Strategy;
-import Game.AI.Move;
 import Game.Board;
-
-import java.util.ArrayList;
 
 /**
  * Created by Arnaud on 11/16/2016.
@@ -16,15 +10,11 @@ import java.util.ArrayList;
 public class Heuristic {
 
     //INSTANCE OF POSSIBLE STRATEGIES
-    private AggressiveStrategy aggroStrat; //Strategy to link pieces togheter
     private GeneralStrategy generalStrat; //Strategy to eat pieces and block moves from opponent
-    private BeginStrategy beginStrat;
 
     private Strategy strat;
 
     public Heuristic(){
-
-        aggroStrat = new AggressiveStrategy();
         generalStrat = new GeneralStrategy();
 
         this.strat = generalStrat;

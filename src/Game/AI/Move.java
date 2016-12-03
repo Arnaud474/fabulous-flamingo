@@ -12,27 +12,47 @@ import sun.net.www.content.audio.x_aiff;
  */
 
 public class Move {
+    
+    /** The piece. */
     private Piece piece;
+    
+    /** The from coordinate. */
     private Point from;
+    
+    /** The to coordinate. */
     private Point to;
-    private int type;
+    
+    
+    /** The cost. */
     private int cost;
 
-    public Move(Piece p, Point f, Point t, int type){
+    /**
+     * Instantiates a new move.
+     *
+     * @param p the p
+     * @param f the f
+     * @param t the t
+     */
+    public Move(Piece p, Point f, Point t){
         this.piece = p;
         this.from = f;
         this.to = t;
-        this.type = type;
     }
     
+    /**
+     * Sets the cost.
+     *
+     * @param cost the new cost
+     */
     public void setCost(int cost){
     	this.cost = cost;
     }
-    
-    public int getType(){
-    	return this.type;
-    }
+ 
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 * Used to create a new command to send to server
+	 */
 	@Override
 	public String toString() {
 		HashMap<Integer, Character> hmapVert = new HashMap<Integer, Character>();
